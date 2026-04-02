@@ -4,8 +4,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import svgPaths from '../../imports/svg-odqll2j1e4';
-import img4 from "../../assets/img4.png";
-import img5 from "../../assets/img5.png";
+import img21 from "../../assets/img21.png";
+import img18 from "../../assets/img18.png";
 import { FloatingOrnament } from './FloatingOrnament';
 import { ImmersiveBackgroundAnimations } from './ImmersiveBackgroundAnimations';
 
@@ -128,8 +128,8 @@ export function BrandsSection() {
   const brands = [
     { name: 'SCHÜCO', component: <SchucoLogo /> },
     { name: 'Deceuninck', component: <DeceuninckLogo /> },
-    { name: 'Gulf Extrusions (GEX)', component: <img src={img4} alt="Gulf Extrusions (GEX)" className="w-full h-full object-contain" /> },
-    { name: 'VETROMAX', component: <img src={img5} alt="VETROMAX Aluminium Minimalist Systems" className="w-full h-full object-contain" /> },
+    { name: 'Gulf Extrusions (GEX)', component: <img src={img21} alt="Gulf Extrusions (GEX)" className="w-full h-full object-contain" /> },
+    { name: 'VETROMAX', component: <img src={img18} alt="VETROMAX Aluminium Minimalist Systems" className="w-full h-full object-contain" /> },
     { name: 'CORTIZO', component: <CortizoLogo /> },
   ];
 
