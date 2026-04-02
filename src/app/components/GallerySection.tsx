@@ -85,13 +85,13 @@ const galleryImages = [
     location: 'THE SPRINGS',
     description: 'Modern aluminum architectural design',
   },
-  {
-    id: 10,
-    url: img10,
-    alt: 'AL BARARI - THE NEST - Premium aluminum structures',
-    location: 'AL BARARI - THE NEST',
-    description: 'Premium aluminum structures',
-  },
+  // {
+  //   id: 10,
+  //   url: img10,
+  //   alt: 'AL BARARI - THE NEST - Premium aluminum structures',
+  //   location: 'AL BARARI - THE NEST',
+  //   description: 'Premium aluminum structures',
+  // },
   {
     id: 11,
     url: img11,
@@ -99,13 +99,13 @@ const galleryImages = [
     location: 'UMM SEQUIMM',
     description: 'Contemporary aluminum installations',
   },
-  {
-    id: 12,
-    url: img12,
-    alt: 'DAMAC HILLS - Luxury aluminum doors and windows',
-    location: 'DAMAC HILLS',
-    description: 'Luxury aluminum doors and windows',
-  },
+  // {
+  //   id: 12,
+  //   url: img12,
+  //   alt: 'DAMAC HILLS - Luxury aluminum doors and windows',
+  //   location: 'DAMAC HILLS',
+  //   description: 'Luxury aluminum doors and windows',
+  // },
   {
     id: 13,
     url: img13,

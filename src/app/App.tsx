@@ -62,7 +62,7 @@ function ThankYou() {
           href="/"
           className="inline-flex items-center gap-2 px-6 py-3 bg-[#008873] text-white rounded-xl font-semibold hover:bg-[#006d5c] transition-all"
         >
-          Go Back Home →
+          Go Back Home
         </a>
       </div>
     </div>
