@@ -17,8 +17,19 @@ import { ScrollProgressIndicator, FormAttractorParticles } from './components/Sc
 import { SectionTransitionEffect } from './components/SectionTransitionEffect';
 import { useEffect, useRef, useState } from 'react';
 import { getAnimationSettings } from './utils/performance';
+import { Routes, Route } from "react-router-dom";
 
-export default function App() {
+
+function ThankYou() {
+  return (
+    <div style={{ textAlign: "center", padding: "100px" }}>
+      <h1>Thank You!</h1>
+      <p>Your form has been submitted successfully.</p>
+    </div>
+  );
+}
+
+function Home() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [animationSettings, setAnimationSettings] = useState(getAnimationSettings());
   const [isMobile, setIsMobile] = useState(false);
@@ -52,6 +63,8 @@ export default function App() {
     // Get performance settings
     setAnimationSettings(getAnimationSettings());
   }, []);
+
+  
 
   return (
     <>
@@ -129,5 +142,15 @@ export default function App() {
         <Footer />
       </div>
     </>
+    
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/thank-you" element={<ThankYou />} />
+    </Routes>
   );
 }
