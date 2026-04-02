@@ -19,103 +19,109 @@ import img11 from "../../assets/img11.png";
 import img12 from "../../assets/img12.png";
 import img13 from "../../assets/img13.png";
 import img14 from "../../assets/img14.png";
-
+import img15 from "../../assets/img15.png";
+import img16 from "../../assets/img16.png";
+import img17 from "../../assets/img17.png";
+import img20 from "../../assets/img20.png";
+import img22 from "../../assets/img22.png";
+import img23 from "../../assets/img23.png";
+import img24 from "../../assets/img24.png";
 // Gallery images showcasing SWIFTROOMS projects - Starting with second image from left as center
 const galleryImages = [
   {
     id: 1,
-    url: img1,
+    url: img14,
     alt: 'SWIFTROOMS premium aluminum structure project',
     location: 'SWIFTROOMS',
     description: 'Premium aluminum structure project',
   },
   {
     id: 2,
-    url: img2,
+    url: img6,
     alt: 'Modern luxury home exterior with SWIFTROOMS aluminum installations',
     location: 'LUXURY HOME',
     description: 'Modern exterior with aluminum installations',
   },
   {
     id: 3,
-    url: img3,
+    url: img2,
     alt: 'Contemporary villa with premium aluminum windows and doors',
     location: 'CONTEMPORARY VILLA',
     description: 'Premium aluminum windows and doors',
   },
   {
     id: 4,
-    url: img4,
+    url: img8,
     alt: 'JUMEIRAH GOLF ESTATES - Luxury aluminum structure project',
     location: 'JUMEIRAH GOLF ESTATES',
     description: 'Luxury aluminum structure project',
   },
   {
     id: 5,
-    url: img5,
+    url: img24,
     alt: 'DUBAI HILLS - Premium residential aluminum installation',
     location: 'DUBAI HILLS',
     description: 'Premium residential aluminum installation',
   },
   {
     id: 6,
-    url: img6,
+    url: img17,
     alt: 'PALM JUMEIRAH - Exclusive aluminum doors and windows',
     location: 'PALM JUMEIRAH',
     description: 'Exclusive aluminum doors and windows',
   },
   {
     id: 7,
-    url: img7,
+    url: img16,
     alt: 'THE MEADOWS - High-end aluminum structure solutions',
     location: 'THE MEADOWS',
     description: 'High-end aluminum structure solutions',
   },
   {
     id: 8,
-    url: img8,
+    url: img13,
     alt: 'PHILLIAS FOGGS - Custom aluminum installations',
     location: 'PHILLIAS FOGGS',
     description: 'Custom aluminum installations',
   },
   {
     id: 9,
-    url: img9,
+    url: img3,
     alt: 'THE SPRINGS - Modern aluminum architectural design',
     location: 'THE SPRINGS',
     description: 'Modern aluminum architectural design',
   },
-  // {
-  //   id: 10,
-  //   url: img10,
-  //   alt: 'AL BARARI - THE NEST - Premium aluminum structures',
-  //   location: 'AL BARARI - THE NEST',
-  //   description: 'Premium aluminum structures',
-  // },
+  {
+    id: 10,
+    url: img15,
+    alt: 'AL BARARI - THE NEST - Premium aluminum structures',
+    location: 'AL BARARI - THE NEST',
+    description: 'Premium aluminum structures',
+  },
   {
     id: 11,
-    url: img11,
+    url: img23,
     alt: 'UMM SEQUIMM - Contemporary aluminum installations',
     location: 'UMM SEQUIMM',
     description: 'Contemporary aluminum installations',
   },
-  // {
-  //   id: 12,
-  //   url: img12,
-  //   alt: 'DAMAC HILLS - Luxury aluminum doors and windows',
-  //   location: 'DAMAC HILLS',
-  //   description: 'Luxury aluminum doors and windows',
-  // },
+  {
+    id: 12,
+    url: img7,
+    alt: 'DAMAC HILLS - Luxury aluminum doors and windows',
+    location: 'DAMAC HILLS',
+    description: 'Luxury aluminum doors and windows',
+  },
   {
     id: 13,
-    url: img13,
+    url: img20,
     alt: 'DAMAC HILLS - Modern aluminum structure project',
     location: 'DAMAC HILLS',
     description: 'Modern aluminum structure project',
   },
   {
     id: 14,
-    url: img14,
+    url: img22,
     alt: 'ARABIAN RANCHES - Premium aluminum architectural solutions',
     location: 'ARABIAN RANCHES',
     description: 'Premium aluminum architectural solutions',
