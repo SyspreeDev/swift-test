@@ -160,17 +160,25 @@ function ProductCard({ product }: ProductCardProps) {
         {/* Image Container */}
         <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <motion.img
-              src={product.imageUrl}
-              alt={product.name}
-              className={imageConfig.className}
-              style={imageConfig.style}
-              animate={{
-                scale: isHovered ? 1.1 : 1,
-              }}
-              transition={{ duration: 0.4 }}
-            />
-          </div>
+  <motion.img
+    src={product.imageUrl}
+    alt={product.name}
+    className={
+      isMobile
+        ? "w-full h-full object-cover object-top"
+        : imageConfig.className
+    }
+    style={
+      isMobile
+        ? undefined
+        : imageConfig.style
+    }
+    animate={{
+      scale: isHovered ? 1.1 : 1,
+    }}
+    transition={{ duration: 0.4 }}
+  />
+</div>
           
           {/* Overlay */}
           <motion.div
@@ -276,7 +284,7 @@ export function ProductsSection() {
 
   const settings = {
     dots: true,
-    infinite: false,
+    infinite: true,
     speed: 600,
     slidesToShow: 3,
     slidesToScroll: 1,
