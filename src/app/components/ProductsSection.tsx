@@ -276,7 +276,7 @@ export function ProductsSection() {
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 600,
     slidesToShow: 3,
     slidesToScroll: 1,
