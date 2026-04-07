@@ -83,7 +83,7 @@ export function CookieConsent() {
                       <h3 className="font-['Exo',sans-serif] text-base lg:text-lg font-bold text-[#1c1c1e] mb-1 lg:mb-2">
                         Cookie & Privacy Notice
                       </h3>
-                      <p className="font-['Barlow',sans-serif] text-xs lg:text-sm text-[#3a3a3c] leading-relaxed">
+                      <p className="font-sans text-xs lg:text-sm text-[#3a3a3c] leading-relaxed">
                         We use cookies and similar technologies to enhance your browsing experience, analyze site traffic, 
                         and deliver personalized content. By clicking "Accept All", you consent to our use of cookies. 
                         You can manage your preferences or learn more in our{' '}
