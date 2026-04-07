@@ -9,6 +9,8 @@ import img2 from "../../assets/img2.png";
 import img3 from "../../assets/img3.png";
 import img4 from "../../assets/img4.png";
 import img5 from "../../assets/img5.png";
+import img9 from "../../assets/img9.png";
+import img11 from "../../assets/img11.png";
 
 interface Product {
   id: number;
@@ -23,35 +25,35 @@ const products: Product[] = [
     id: 1,
     name: 'Aluminum Sliding Doors',
     description: 'Sleek sliding doors with smooth operation, perfect for balconies and terraces.',
-    imageUrl: img1,
+    imageUrl: img4,
     category: 'Doors'
   },
   {
     id: 2,
     name: 'Bi-Fold Doors',
     description: 'Premium folding doors that seamlessly connect indoor and outdoor spaces.',
-    imageUrl: img2,
+    imageUrl: img9,
     category: 'Doors'
   },
   {
     id: 3,
     name: 'Aluminum Windows',
     description: 'Energy-efficient aluminum windows with superior thermal insulation and modern design.',
-    imageUrl: img3,
+    imageUrl: img1,
     category: 'Windows'
   },
   {
     id: 4,
     name: 'UPVC Windows and Doors',
     description: 'Low-maintenance UPVC windows and doors with exceptional durability, thermal efficiency, and security features.',
-    imageUrl: img4,
+    imageUrl: img5,
     category: 'Windows & Doors'
   },
   {
     id: 5,
     name: 'Skylights and Garden Rooms',
     description: 'Premium roof windows and skylights that flood interiors with natural light.',
-    imageUrl: img5,
+    imageUrl: img11,
     category: 'Outdoor Spaces'
   },
 ];
@@ -160,25 +162,17 @@ function ProductCard({ product }: ProductCardProps) {
         {/* Image Container */}
         <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-  <motion.img
-    src={product.imageUrl}
-    alt={product.name}
-    className={
-      isMobile
-        ? "w-full h-full object-cover object-top"
-        : imageConfig.className
-    }
-    style={
-      isMobile
-        ? undefined
-        : imageConfig.style
-    }
-    animate={{
-      scale: isHovered ? 1.1 : 1,
-    }}
-    transition={{ duration: 0.4 }}
-  />
-</div>
+            <motion.img
+              src={product.imageUrl}
+              alt={product.name}
+              className={imageConfig.className}
+              style={imageConfig.style}
+              animate={{
+                scale: isHovered ? 1.1 : 1,
+              }}
+              transition={{ duration: 0.4 }}
+            />
+          </div>
           
           {/* Overlay */}
           <motion.div
