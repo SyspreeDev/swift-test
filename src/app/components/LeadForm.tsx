@@ -169,15 +169,15 @@ export function LeadForm({ autoOpen = false }: { autoOpen?: boolean }) {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (currentStep === totalSteps) {
-  //     const timer = setTimeout(() => {
-  //       navigate("/thank-you");
-  //     }, 5000);
+  useEffect(() => {
+    if (currentStep === totalSteps) {
+      const timer = setTimeout(() => {
+        navigate("/thank-you");
+      }, 5000);
 
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [currentStep, navigate]); // ✅ add navigate
+      return () => clearTimeout(timer);
+    }
+  }, [currentStep, navigate]); // ✅ add navigate
 
   const [formData, setFormData] = useState({
     name: "",
@@ -400,36 +400,25 @@ export function LeadForm({ autoOpen = false }: { autoOpen?: boolean }) {
   //   setCurrentStep(totalSteps);
   //   // Don't auto-close - let user manually return via "Return to Home" button
   // };
- const handleSubmit = async () => {
-  try {
-    const payload = {
-      formData,
-      selectedCountryCode,
-    };
+  const handleSubmit = async () => {
+    try {
+      // 🔹 Call your API route
+      const res = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    // ✅ Save data
-    localStorage.setItem("leadData", JSON.stringify(payload));
+      if (!res.ok) throw new Error("Failed to send");
 
-    // 🔹 Call API
-    const res = await fetch("/api/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) throw new Error("Failed to send");
-
-    // ✅ Navigate with data
-    navigate("/thank-you", {
-      state: payload,
-    });
-
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
+      // 🔹 Show Step 6 (Thank You UI)
+      setCurrentStep(totalSteps);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const isStepValid = () => {
     switch (currentStep) {
