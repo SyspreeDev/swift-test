@@ -17,6 +17,7 @@ import { ScrollProgressIndicator, FormAttractorParticles } from './components/Sc
 import { SectionTransitionEffect } from './components/SectionTransitionEffect';
 import { useEffect, useRef, useState } from 'react';
 import { getAnimationSettings } from './utils/performance';
+import WhatsAppButton from "./components/WhatsappButton";
 import { Routes, Route } from "react-router-dom";
 
 
@@ -109,6 +110,7 @@ function Home() {
   return (
     <>
       <Navigation />
+        <WhatsAppButton />
       
       {/* Interactive Decorations Layer - ONLY on desktop devices */}
       {!isMobile && animationSettings.enableAnimations && animationSettings.enableParallax && (

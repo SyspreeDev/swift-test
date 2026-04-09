@@ -34,19 +34,6 @@ export default async function handler(req, res) {
       `,
     });
 
-    // 🔹 Optional: Send confirmation to user
-    // if (email) {
-    //   await transporter.sendMail({
-    //     from: process.env.EMAIL_USER,
-    //     to: email,
-    //     subject: "Thank you for contacting us",
-    //     html: `
-    //       <h2>Hi ${name},</h2>
-    //       <p>Thank you for reaching out. Our team will contact you soon.</p>
-    //     `,
-    //   });
-    // }
-
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error("Email Error:", error);

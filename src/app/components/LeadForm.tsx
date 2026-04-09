@@ -173,7 +173,7 @@ export function LeadForm({ autoOpen = false }: { autoOpen?: boolean }) {
     if (currentStep === totalSteps) {
       const timer = setTimeout(() => {
         navigate("/thank-you");
-      }, 3000);
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
