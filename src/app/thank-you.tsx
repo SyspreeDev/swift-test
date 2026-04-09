@@ -1,6 +1,15 @@
 import { useEffect } from "react";
 
 function ThankYou() {
+  useEffect(() => {
+    window.dataLayer = window.dataLayer || [];
+
+    window.dataLayer.push({
+      event: "thank_you_page_view",
+    });
+
+    console.log("Thank You event fired");
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] px-4">
@@ -51,6 +60,5 @@ function ThankYou() {
     </div>
   );
 }
-
 
 export default ThankYou;
