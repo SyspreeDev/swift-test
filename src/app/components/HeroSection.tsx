@@ -122,8 +122,8 @@ export function HeroSection({ enableVideo = false, videoUrl, mobileVideoUrl }: H
                   {/* Main Heading */}
                   <h1 className="font-['Exo',sans-serif] text-sm lg:text-2xl xl:text-3xl font-semibold leading-tight tracking-[0.12em] lg:tracking-[0.15em] uppercase">
                     <span className="block whitespace-nowrap">Performance Windows Doors</span>{' '}
-                    <span className="block whitespace-nowrap">Engineered for Excellence</span>{' '}
-                    <span className="block whitespace-nowrap">Designed for the UAE Climate</span>
+                    <span className="block whitespace-nowrap">Engineered for Excellence &</span>{' '}
+                    <span className="block whitespace-nowrap">Book Your Showroom Visit Today</span>
                   </h1>
 
                   {/* Benefits List - All 5 benefits visible on mobile and desktop */}
