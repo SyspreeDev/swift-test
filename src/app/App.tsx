@@ -206,7 +206,7 @@ import { BrandsSection } from "./components/BrandsSection";
 import { FormSection } from "./components/FormSection";
 import WhatsAppButton from "./components/WhatsappButton";
 import { getAnimationSettings } from "./utils/performance";
-import { MouseProvider } from "./context/MouseContext";
+import { MouseProvider } from "./context/Mousecontext";
 import ThankYou from "./thank-you";
 
 // Lazy-load everything below the fold
@@ -295,10 +295,7 @@ function Home() {
   }, []);
 
   return (
-    <MouseProvider>
-      <Navigation />
-      <WhatsAppButton />
-
+    <>
       {!isMobile &&
         animationSettings.enableAnimations &&
         animationSettings.enableParallax && (
@@ -376,15 +373,19 @@ function Home() {
           <Footer />
         </Suspense>
       </div>
-    </MouseProvider>
+    </>
   );
 }
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/thank-you" element={<ThankYou />} />
-    </Routes>
+    <MouseProvider>
+      <Navigation />
+      <WhatsAppButton />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/thank-you" element={<ThankYou />} />
+      </Routes>
+    </MouseProvider>
   );
 }

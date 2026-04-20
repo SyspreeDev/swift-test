@@ -1,63 +1,42 @@
-/**
- * MouseContext — single shared mouse position for the whole app.
- *
- * Previously each component (AnimatedOrnament, FloatingOrnament,
- * BackgroundAnimations, InteractiveDecorations) attached its OWN
- * window mousemove listener causing 4+ simultaneous setState cascades.
- *
- * This context attaches ONE listener, capped to 60 fps via RAF,
- * and exposes Framer Motion MotionValues so consumers derive
- * transforms without triggering any React re-renders.
- */
-import { createContext, useContext, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { useMotionValue, useSpring, MotionValue } from 'motion/react';
 
-interface MouseContextValue {
-  rawX:    MotionValue<number>;
-  rawY:    MotionValue<number>;
+interface MouseContextType {
   smoothX: MotionValue<number>;
   smoothY: MotionValue<number>;
 }
 
-const MouseContext = createContext<MouseContextValue | null>(null);
-const SPRING = { damping: 25, stiffness: 100 };
+const MouseContext = createContext<MouseContextType | undefined>(undefined);
 
-export function MouseProvider({ children }: { children: ReactNode }) {
-  const rawX    = useMotionValue(0);
-  const rawY    = useMotionValue(0);
-  const smoothX = useSpring(rawX, SPRING);
-  const smoothY = useSpring(rawY, SPRING);
+export const useMouse = () => {
+  const context = useContext(MouseContext);
+  if (!context) {
+    throw new Error('useMouse must be used within a MouseProvider');
+  }
+  return context;
+};
+
+export const MouseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const mouseX = useMotionValue(typeof window !== 'undefined' ? window.innerWidth / 2 : 0);
+  const mouseY = useMotionValue(typeof window !== 'undefined' ? window.innerHeight / 2 : 0);
+
+  const springConfig = { damping: 25, stiffness: 100 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    let rafId: number | null = null;
-    let pX = 0, pY = 0;
-
-    const onMove = (e: MouseEvent) => {
-      pX = e.clientX; pY = e.clientY;
-      if (rafId === null) {
-        rafId = requestAnimationFrame(() => {
-          rawX.set(pX); rawY.set(pY);
-          rafId = null;
-        });
-      }
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
 
-    window.addEventListener('mousemove', onMove, { passive: true });
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      if (rafId !== null) cancelAnimationFrame(rafId);
-    };
-  }, [rawX, rawY]);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
 
   return (
-    <MouseContext.Provider value={{ rawX, rawY, smoothX, smoothY }}>
+    <MouseContext.Provider value={{ smoothX, smoothY }}>
       {children}
     </MouseContext.Provider>
   );
-}
-
-export function useMouse(): MouseContextValue {
-  const ctx = useContext(MouseContext);
-  if (!ctx) throw new Error('useMouse must be used inside <MouseProvider>');
-  return ctx;
-}
+};
