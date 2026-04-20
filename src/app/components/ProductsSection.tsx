@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Slider from 'react-slick';
@@ -66,7 +66,7 @@ function NextArrow({ onClick }: ArrowProps) {
   return (
     <button
       onClick={onClick}
-      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
+      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-3 shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px]"
       aria-label="Next slide"
     >
       <ChevronRight className="w-6 h-6" />
@@ -78,7 +78,7 @@ function PrevArrow({ onClick }: ArrowProps) {
   return (
     <button
       onClick={onClick}
-      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
+      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-3 shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px]"
       aria-label="Previous slide"
     >
       <ChevronLeft className="w-6 h-6" />
@@ -243,7 +243,7 @@ function ProductCard({ product }: ProductCardProps) {
   );
 }
 
-export function ProductsSection() {
+export const ProductsSection = memo(function ProductsSection() {
   const [activeSlide, setActiveSlide] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -429,4 +429,4 @@ export function ProductsSection() {
       `}</style>
     </section>
   );
-}
+});

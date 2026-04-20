@@ -1,22 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
 import svgPaths from '../../imports/svg-8x8crl5gmo';
+import { useMouse } from '../context/Mousecontext';
 
 export function AnimatedOrnament() {
   const ornamentRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
+  const { smoothX, smoothY } = useMouse();
+  
+  // Convert Framer Motion MotionValues to pixel positions for parallax
+  const [displayX, setDisplayX] = useState(0);
+  const [displayY, setDisplayY] = useState(0);
 
-  // Mouse parallax effect
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 20;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      setMousePosition({ x, y });
-    };
+    const unsubscribeX = smoothX.onChange((latest) => {
+      const x = (latest / window.innerWidth - 0.5) * 20;
+      setDisplayX(x);
+    });
+    
+    const unsubscribeY = smoothY.onChange((latest) => {
+      const y = (latest / window.innerHeight - 0.5) * 20;
+      setDisplayY(y);
+    });
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+    return () => {
+      unsubscribeX();
+      unsubscribeY();
+    };
+  }, [smoothX, smoothY]);
 
   // Intersection Observer for scroll animations
   useEffect(() => {
@@ -43,7 +53,7 @@ export function AnimatedOrnament() {
       ref={ornamentRef}
       className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none hidden lg:block overflow-visible"
       style={{
-        transform: `translate(${200 + mousePosition.x}px, ${-50 + mousePosition.y}%)`,
+        transform: `translate(${200 + displayX}px, ${-50 + displayY}%)`,
         transition: 'transform 0.3s ease-out',
         opacity: isVisible ? 0.15 : 0,
         filter: 'blur(0.5px)',

@@ -117,7 +117,7 @@ export function CookieConsent() {
                     </button>
                     <button
                       onClick={acceptAll}
-                      className="px-4 py-2.5 lg:px-5 lg:py-3 bg-gradient-to-r from-[#007969] to-[#008873] text-white rounded-lg font-['Rajdhani',sans-serif] text-sm lg:text-base font-bold hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
+                      className="px-4 py-2.5 lg:px-5 lg:py-3 bg-gradient-to-r from-[#007969] to-[#008873] text-white rounded-lg font-['Rajdhani',sans-serif] text-sm lg:text-base font-bold hover:shadow-lg hover:translate-y-[-1px] active:scale-95 transition-all duration-200"
                     >
                       Accept All
                     </button>

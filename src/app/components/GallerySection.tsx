@@ -1,31 +1,31 @@
-import { useState, useRef, useEffect, forwardRef } from 'react';
+import { useState, useRef, useEffect, forwardRef, memo } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'motion/react';
 import { Instagram, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import svgPaths from '../../imports/svg-tso0h1bvi5';
 
 // Import gallery images from Figma
-import img1 from "../../assets/img1.png";
-import img2 from "../../assets/img2.png";
-import img3 from "../../assets/img3.png";
-import img4 from "../../assets/img4.png";
-import img5 from "../../assets/img5.png";
-import img6 from "../../assets/img6.png";
-import img7 from "../../assets/img7.png";
-import img8 from "../../assets/img8.png";
-import img9 from "../../assets/img9.png";
-import img10 from "../../assets/img10.png";
-import img11 from "../../assets/img11.png";
-import img12 from "../../assets/img12.png";
-import img13 from "../../assets/img13.png";
-import img14 from "../../assets/img14.png";
-import img15 from "../../assets/img15.png";
-import img16 from "../../assets/img16.png";
-import img17 from "../../assets/img17.png";
-import img20 from "../../assets/img20.png";
-import img22 from "../../assets/img22.png";
-import img23 from "../../assets/img23.png";
-import img24 from "../../assets/img24.png";
+import img1 from "../../assets/img1.webp";
+import img2 from "../../assets/img2.webp";
+import img3 from "../../assets/img3.webp";
+import img4 from "../../assets/img4.webp";
+import img5 from "../../assets/img5.webp";
+import img6 from "../../assets/img6.webp";
+import img7 from "../../assets/img7.webp";
+import img8 from "../../assets/img8.webp";
+import img9 from "../../assets/img9.webp";
+import img10 from "../../assets/img10.webp";
+import img11 from "../../assets/img11.webp";
+import img12 from "../../assets/img12.webp";
+import img13 from "../../assets/img13.webp";
+import img14 from "../../assets/img14.webp";
+import img15 from "../../assets/img15.webp";
+import img16 from "../../assets/img16.webp";
+import img17 from "../../assets/img17.webp";
+import img20 from "../../assets/img20.webp";
+import img22 from "../../assets/img22.webp";
+import img23 from "../../assets/img23.webp";
+import img24 from "../../assets/img24.webp";
 // Gallery images showcasing SWIFTROOMS projects - Starting with second image from left as center
 const galleryImages = [
   {
@@ -422,7 +422,7 @@ const GalleryImage = forwardRef<HTMLDivElement, GalleryImageProps>(({
   );
 });
 
-export function GallerySection() {
+export const GallerySection = memo(function GallerySection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -588,8 +588,8 @@ export function GallerySection() {
           y: bgY,
         }}
       >
-        <div className="absolute top-20 left-10 w-32 h-32 bg-[#008873]/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-[#008873]/10 rounded-full blur-3xl" />
+        <div className="absolute top-20 left-10 w-32 h-32 bg-[#008873]/10 rounded-full blur-xl lg:blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-[#008873]/10 rounded-full blur-xl lg:blur-3xl" />
         <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-[#008873]/5 rounded-full blur-2xl" />
       </motion.div>
 
@@ -1309,4 +1309,4 @@ export function GallerySection() {
       `}</style>
     </section>
   );
-}
+});

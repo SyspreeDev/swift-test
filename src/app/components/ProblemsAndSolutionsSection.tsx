@@ -392,7 +392,7 @@ export function ProblemsAndSolutionsSection() {
               transition={{ duration: 0.5 }}
             >
               <div className="bg-gradient-to-br from-[#007969] to-[#005a50] rounded-xl p-4 lg:p-6 text-white h-full relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-125 transition-transform duration-700" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-xl lg:blur-3xl -translate-y-1/2 translate-x-1/2 transition-opacity duration-700 group-hover:opacity-75" />
                 
                 <h4 className="relative z-10 font-['Barlow',sans-serif] text-base lg:text-2xl font-semibold mb-2 flex items-center gap-2">
                   <span className="w-7 h-7 rounded-full bg-white/20 text-white flex items-center justify-center text-sm">✓</span>

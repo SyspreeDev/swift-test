@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import { motion } from 'motion/react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -121,7 +121,7 @@ function BrandLogo({ children, name }: BrandLogoProps) {
   );
 }
 
-export function BrandsSection() {
+export const BrandsSection = memo(function BrandsSection() {
   const [activeSlide, setActiveSlide] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -292,4 +292,4 @@ export function BrandsSection() {
       `}</style>
     </section>
   );
-}
+});

@@ -1,11 +1,14 @@
-import { LeadForm } from './LeadForm';
-import { LeadFormAndroid } from './LeadFormAndroid';
+import { lazy, Suspense } from 'react';
 import { FloatingOrnament } from './FloatingOrnament';
 import { ImmersiveBackgroundAnimations } from './ImmersiveBackgroundAnimations';
 import { motion } from 'motion/react';
+import { memo } from 'react';
 import { useState, useEffect } from 'react';
 
-export function FormSection() {
+// Lazy load forms since they're below the fold
+const LeadForm = lazy(() => import('./LeadForm').then(m => ({ default: m.LeadForm })));
+
+export const FormSection = memo(function FormSection() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -45,9 +48,11 @@ export function FormSection() {
           </div>
 
           {/* Lead Form - Use same desktop version for all devices */}
-          <LeadForm />
+          <Suspense fallback={<div className="w-full h-96 bg-gray-200 rounded-lg animate-pulse" />}>
+            <LeadForm />
+          </Suspense>
         </div>
       </div>
     </section>
   );
-}
+});

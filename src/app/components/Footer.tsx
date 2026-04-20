@@ -128,7 +128,7 @@ export function Footer() {
                   href="https://www.instagram.com/swiftrooms.ae/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 bg-[#008873] rounded-lg flex items-center justify-center hover:bg-[#007969] transition-all hover:scale-110 duration-200"
+                  className="w-10 h-10 bg-[#008873] rounded-lg flex items-center justify-center hover:bg-[#007969] transition-all hover:translate-y-[-2px] duration-200"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-5 h-5" />

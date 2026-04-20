@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, memo } from 'react';
 import { motion } from 'motion/react';
 import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
 import Slider from 'react-slick';
@@ -439,7 +439,7 @@ function NextArrow({ onClick }: ArrowProps) {
   return (
     <button
       onClick={onClick}
-      className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-2 lg:p-3 shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
+      className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-2 lg:p-3 shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] active:scale-95"
       aria-label="Next testimonial"
     >
       <ChevronRight className="w-5 h-5 lg:w-6 lg:h-6" />
@@ -451,7 +451,7 @@ function PrevArrow({ onClick }: ArrowProps) {
   return (
     <button
       onClick={onClick}
-      className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-2 lg:p-3 shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
+      className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-2 lg:p-3 shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] active:scale-95"
       aria-label="Previous testimonial"
     >
       <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6" />
@@ -521,7 +521,7 @@ function ReviewCard({ review }: { review: Review }) {
   );
 }
 
-export function TestimonialsSection() {
+export const TestimonialsSection = memo(function TestimonialsSection() {
   const sliderRef = useRef<Slider>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [reviews, setReviews] = useState<Review[]>(CONFIG.staticReviews);
@@ -612,4 +612,4 @@ export function TestimonialsSection() {
       </div>
     </section>
   );
-}
+});

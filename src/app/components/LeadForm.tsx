@@ -150,6 +150,40 @@ const validatePhone = (
   return { isValid: true, error: "" };
 };
 
+const getWhatsAppMessage = (
+  data: any,
+  countryCode: string,
+  pTypes: any[],
+  prods: any[],
+  projTypes: any[],
+) => {
+  const propertyLabel =
+    pTypes.find((p) => p.value === data.propertyType)?.label || "Not specified";
+  const projectLabel =
+    projTypes.find((p) => p.value === data.projectType)?.label ||
+    "Not specified";
+  const productsLabel =
+    data.productsNeeded
+      .map((val: string) => prods.find((p) => p.value === val)?.label)
+      .filter(Boolean)
+      .join(", ") || "Not specified";
+
+  return encodeURIComponent(
+    `Thank you for your enquiry. Our team will be in touch shortly, however you are welcome to contact us directly at any time.\n\n` +
+      `YOUR INQUIRY DETAILS:\n` +
+      `Name: ${data.name}\n` +
+      `Phone: ${countryCode} ${data.phone}\n` +
+      `Email: ${data.email || "Not provided"}\n` +
+      `Property Type: ${propertyLabel}\n` +
+      `Products Needed: ${productsLabel}\n` +
+      `Project Type: ${projectLabel}\n\n` +
+      `---\n\n` +
+      `Showroom Location: ETJAR – J1 Complex, Block A, Warehouse 11 & 12, Jebel Ali Industrial Area 1, Dubai.\n\n` +
+      `Call on +971 4 347 4240, or visit www.swiftrooms.ae\n` +
+      `The Swiftrooms Team`,
+  );
+};
+
 export function LeadForm({ autoOpen = false }: { autoOpen?: boolean }) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(true);
@@ -402,6 +436,10 @@ export function LeadForm({ autoOpen = false }: { autoOpen?: boolean }) {
   // };
   const handleSubmit = async () => {
     try {
+      // 1. Run the LeadOptimizer integration
+      // We don't 'await' it if you don't want to make the user wait for the marketing sync
+      await pushToLeadOptimizer(formData, selectedCountryCode, journeyType);
+
       // 🔹 Call your API route
       const res = await fetch("/api/send-email", {
         method: "POST",
@@ -411,12 +449,62 @@ export function LeadForm({ autoOpen = false }: { autoOpen?: boolean }) {
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) throw new Error("Failed to send");
+      // if (!res.ok) throw new Error("Failed to send");
 
       // 🔹 Show Step 6 (Thank You UI)
       setCurrentStep(totalSteps);
     } catch (error) {
       console.error("Error:", error);
+    }
+  };
+
+  /**
+   * Pushes lead data to LeadOptimizer (GoHighLevel)
+   */
+  const pushToLeadOptimizer = async (
+    formData: any,
+    countryCode: string,
+    journeyType: string | null,
+  ) => {
+    // 1. Capture the attribution ID from the script in your <head>
+    // Inside your function
+    const sessionId =
+      (window as any)._ghl_session_id ||
+      (window as any).vst ||
+      "local_test_session_" + Date.now(); // Fallback for dev
+
+      // 2. Access Env Variables
+    const locationId = import.meta.env.VITE_LEAD_OPTIMIZER_LOCATION_ID;
+    const webhookUrl = import.meta.env.VITE_LEAD_OPTIMIZER_WEBHOOK_URL;
+
+    // 2. Format the payload for their API/Webhook
+    const payload = {
+      firstName: formData.name,
+      email: formData.email,
+      phone: `${countryCode}${formData.phone.replace(/\D/g, "")}`,
+      property_type: formData.propertyType,
+      project_type: formData.projectType,
+      products: formData.productsNeeded.join(", "),
+      journey_type: journeyType,
+      attribution_id: sessionId,
+      // Replace with your actual Location ID from LeadOptimize
+      locationId: locationId,
+      source: "Website Hero Form",
+    };
+
+    try {
+      const response = await fetch(
+        webhookUrl,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
+      return response.ok;
+    } catch (error) {
+      console.error("LeadOptimizer Integration Error:", error);
+      return false;
     }
   };
 
@@ -953,22 +1041,12 @@ export function LeadForm({ autoOpen = false }: { autoOpen?: boolean }) {
 
               {/* Compact WhatsApp CTA Button */}
               <a
-                href={`https://wa.me/971505269149?text=${encodeURIComponent(
-                  `Thank you for your enquiry. Our team will be in touch shortly, however you are welcome to contact us directly at any time.\n\n` +
-                    `YOUR INQUIRY DETAILS:\n` +
-                    `Name: ${formData.name}\n` +
-                    `Phone: ${selectedCountryCode} ${formData.phone}\n` +
-                    `Email: ${formData.email || "Not provided"}\n` +
-                    `Property Type: ${propertyTypes.find((p) => p.value === formData.propertyType)?.label || "Not specified"}\n` +
-                    `Products Needed: ${formData.productsNeeded.map((p) => products.find((prod) => prod.value === p)?.label).join(", ") || "Not specified"}\n` +
-                    `Project Type: ${projectTypes.find((p) => p.value === formData.projectType)?.label || "Not specified"}\n\n` +
-                    `---\n\n` +
-                    `Showroom Location: ETJAR – J1 Complex, Block A, Warehouse 11 & 12, Jebel Ali Industrial Area 1, Dubai.\n\n` +
-                    `For directions, please use Google Maps:\n` +
-                    `https://maps.google.com/?q=ETJAR+J1+Complex+Block+A+Warehouse+11-12+Jebel+Ali+Industrial+Area+1+Dubai\n\n` +
-                    `Call on +971 4 347 4240, or visit www.swiftrooms.ae\n` +
-                    `We look forward to welcoming you to our showroom soon!\n\n` +
-                    `The Swiftrooms Team`,
+                href={`https://wa.me/971505269149?text=${getWhatsAppMessage(
+                  formData,
+                  selectedCountryCode,
+                  propertyTypes,
+                  products,
+                  projectTypes,
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
