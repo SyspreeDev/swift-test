@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValue } from 'motion/react';
 import { CadLogo } from './CadLogo';
-import { useMouse } from '../context/Mousecontext';
+import { useMouse } from '../context/MouseContext';
 
 export function BackgroundAnimations() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });

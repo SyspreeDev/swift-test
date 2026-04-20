@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import svgPaths from '../../imports/svg-8x8crl5gmo';
-import { useMouse } from '../context/Mousecontext';
+import { useMouse } from '../context/MouseContext';
 
 export function AnimatedOrnament() {
   const ornamentRef = useRef<HTMLDivElement>(null);
