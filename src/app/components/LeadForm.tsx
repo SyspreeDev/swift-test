@@ -466,48 +466,75 @@ export function LeadForm({ autoOpen = false }: { autoOpen?: boolean }) {
     countryCode: string,
     journeyType: string | null,
   ) => {
-    // 1. Capture the attribution ID from the script in your <head>
-    // Inside your function
+    // 1. Capture the attribution ID
     const sessionId =
       (window as any)._ghl_session_id ||
       (window as any).vst ||
-      "local_test_session_" + Date.now(); // Fallback for dev
+      "local_test_session_" + Date.now();
 
-      // 2. Access Env Variables
+    // 2. Access Env Variables
     const locationId = import.meta.env.VITE_LEAD_OPTIMIZER_LOCATION_ID;
     const webhookUrl = import.meta.env.VITE_LEAD_OPTIMIZER_WEBHOOK_URL;
 
-    // 2. Format the payload for their API/Webhook
+    // ─── 3. PHONE SANITIZATION ───
+    let rawPhone = formData.phone.replace(/\D/g, ""); // Remove all non-digits
+
+    // Clean the country code for comparison (e.g., "+971" -> "971")
+    const cleanCode = countryCode.replace(/\D/g, "");
+
+    // If the user typed the country code in the input, remove it to avoid +971971...
+    if (rawPhone.startsWith(cleanCode)) {
+      rawPhone = rawPhone.substring(cleanCode.length);
+    }
+
+    // Drop the leading zero for local Gulf formats (050 -> 50)
+    if (rawPhone.startsWith("0")) {
+      rawPhone = rawPhone.substring(1);
+    }
+
+    const finalPhone = `${countryCode}${rawPhone}`;
+
+    // ─── 4. NAME SPLITTING ───
+    const nameParts = (formData.name || "").trim().split(" ");
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ") || "";
+
+    // 5. Format the payload
     const payload = {
-      firstName: formData.name,
+      firstName: firstName,
+      lastName: lastName,
       email: formData.email,
-      phone: `${countryCode}${formData.phone.replace(/\D/g, "")}`,
+      phone: finalPhone,
       property_type: formData.propertyType,
       project_type: formData.projectType,
-      products: formData.productsNeeded.join(", "),
+      // Ensure products array exists before calling join
+      products: formData.productsNeeded?.join(", ") || "",
       journey_type: journeyType,
       attribution_id: sessionId,
-      // Replace with your actual Location ID from LeadOptimize
       locationId: locationId,
       source: "Website Hero Form",
     };
 
     try {
-      const response = await fetch(
-        webhookUrl,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        },
-      );
-      return response.ok;
+      const response = await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        console.error("GHL Webhook rejected the payload:", response.statusText);
+        return false;
+      }
+
+      return true;
     } catch (error) {
       console.error("LeadOptimizer Integration Error:", error);
       return false;
     }
   };
 
+  
   const isStepValid = () => {
     switch (currentStep) {
       case 0:
