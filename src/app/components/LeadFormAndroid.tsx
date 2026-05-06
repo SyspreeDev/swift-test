@@ -173,7 +173,7 @@ export function LeadFormAndroid({ autoOpen = false }: LeadFormAndroidProps) {
             setIsOpen(true);
           }}
           whileTap={{ scale: 0.98 }}
-          className="w-full inline-flex items-center justify-center gap-3 px-8 py-5 bg-[#007969] text-white rounded-2xl font-['Rajdhani',sans-serif] text-xl font-semibold shadow-xl active:shadow-lg transition-shadow"
+          className="w-full inline-flex items-center justify-center gap-3 px-8 py-5 bg-white text-[#007969] rounded-2xl font-['Rajdhani',sans-serif] text-xl font-semibold shadow-xl active:shadow-lg transition-shadow"
         >
           <span>Start Your Swiftrooms Journey</span>
           <ArrowRight className="w-6 h-6" />

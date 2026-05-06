@@ -1152,7 +1152,7 @@ export function LeadForm({ autoOpen = false }: { autoOpen?: boolean }) {
               setShowMenu(false);
               setIsFormOpen(true);
             }}
-            className="group relative inline-flex items-center gap-3 px-8 py-4 lg:px-12 lg:py-5 bg-[#007969] text-white rounded-2xl font-['Rajdhani',sans-serif] text-lg lg:text-2xl font-semibold shadow-2xl hover:shadow-[#007969]/40 transition-all duration-300 overflow-hidden active:scale-95"
+            className="group relative inline-flex items-center gap-3 px-8 py-4 lg:px-12 lg:py-5 bg-white text-[#007969] rounded-2xl font-['Rajdhani',sans-serif] text-lg lg:text-3xl font-semibold shadow-2xl hover:shadow-[#007969]/40 transition-all duration-300 overflow-hidden active:scale-95"
           >
             {/* Button content */}
             <span className="relative z-10">Start Your Swiftrooms Journey</span>
