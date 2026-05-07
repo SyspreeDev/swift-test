@@ -502,9 +502,9 @@ export function HeroSection({
                   className="space-y-3 lg:space-y-6"
                 >
                   <h1 className="font-['Exo',sans-serif] text-sm lg:text-2xl xl:text-3xl font-semibold leading-tight tracking-[0.12em] lg:tracking-[0.15em] uppercase">
-                    <span className="block whitespace-nowrap">Performance Windows Doors</span>
-                    <span className="block whitespace-nowrap">Engineered for Excellence &</span>
-                    <span className="block whitespace-nowrap">Book Your Showroom Visit Today</span>
+                    <span className="block whitespace-nowrap">PERFORMANCE WINDOWS & DOORS</span>
+                    <span className="block whitespace-nowrap">ENGINEERED FOR EXCELLENCE</span>
+                    <span className="block whitespace-nowrap">BUILT FOR THE UAE CLIMATE</span>
                   </h1>
 
                   <div className="space-y-1.5 lg:space-y-3 pt-0.5 lg:pt-2">
@@ -523,7 +523,7 @@ export function HeroSection({
 
                   <div className="pt-2 lg:hidden">
                     <CTADecoration>
-                      <button onClick={handleMobileCTA} className="w-full bg-[#008873] text-white px-5 py-2.5 rounded-lg font-['Rajdhani',sans-serif] text-xs font-medium hover:bg-white hover:text-[#008873] active:scale-95 transition-all shadow-xl">
+                      <button onClick={handleMobileCTA} className="w-full bg-white text-[#008873] px-5 py-2.5 rounded-lg font-['Rajdhani',sans-serif] text-xs font-medium hover:bg-white hover:text-[#008873] active:scale-95 transition-all shadow-xl">
                         Start Your Swiftrooms Journey
                       </button>
                     </CTADecoration>
@@ -531,7 +531,7 @@ export function HeroSection({
 
                   <div className="pt-2 lg:pt-8">
                     <p className="font-['Exo',sans-serif] text-[10px] lg:text-base font-medium tracking-[0.12em] lg:tracking-[0.2em] uppercase">
-                      Glass & Aluminium Systems Built for Extreme Gulf Conditions
+                      BOOK YOUR SHOWROOM VISIT TODAY
                     </p>
                   </div>
                 </motion.div>
