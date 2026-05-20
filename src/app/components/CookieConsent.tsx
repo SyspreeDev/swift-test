@@ -83,7 +83,7 @@ export function CookieConsent() {
                       <h3 className="font-['Exo',sans-serif] text-base lg:text-lg font-bold text-[#1c1c1e] mb-1 lg:mb-2">
                         Cookie & Privacy Notice
                       </h3>
-                      <p className="font-sans text-xs lg:text-sm text-[#3a3a3c] leading-relaxed">
+                      <p className="font-['Barlow',sans-serif] text-xs lg:text-sm text-[#3a3a3c] leading-relaxed">
                         We use cookies and similar technologies to enhance your browsing experience, analyze site traffic, 
                         and deliver personalized content. By clicking "Accept All", you consent to our use of cookies. 
                         You can manage your preferences or learn more in our{' '}
@@ -117,7 +117,7 @@ export function CookieConsent() {
                     </button>
                     <button
                       onClick={acceptAll}
-                      className="px-4 py-2.5 lg:px-5 lg:py-3 bg-gradient-to-r from-[#007969] to-[#008873] text-white rounded-lg font-['Rajdhani',sans-serif] text-sm lg:text-base font-bold hover:shadow-lg hover:translate-y-[-1px] active:scale-95 transition-all duration-200"
+                      className="px-4 py-2.5 lg:px-5 lg:py-3 bg-gradient-to-r from-[#007969] to-[#008873] text-white rounded-lg font-['Rajdhani',sans-serif] text-sm lg:text-base font-bold hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
                     >
                       Accept All
                     </button>

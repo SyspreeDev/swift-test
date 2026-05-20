@@ -45,13 +45,9 @@ export function InstagramVideoPlayer({
         const playPromise = video.play();
         
         if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              console.log('Video autoplay started successfully');
-            })
-            .catch((error) => {
-              console.log('Autoplay was prevented:', error);
-            });
+          playPromise.catch(() => {
+            // Autoplay was prevented - this is expected behavior in some browsers
+          });
         }
       }
     }
@@ -72,14 +68,14 @@ export function InstagramVideoPlayer({
     const videoId = videoUrl.split('/').pop()?.split('?')[0] || '';
     
     return (
-      <div className="relative bg-black rounded-[22.5px] overflow-hidden shadow-[0px_24px_48px_-12px_rgba(0,0,0,0.25)] w-full max-w-[360px] aspect-[9/16]">
+      <div className="relative bg-black rounded-[22.5px] overflow-hidden shadow-[0px_24px_48px_-12px_rgba(0,0,0,0.25)] w-full max-w-[320px] lg:max-w-[360px] aspect-[9/16]">
         {/* YouTube iframe */}
         <iframe
-          src={`${videoUrl}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&enablejsapi=1`}
-          className="absolute inset-0 w-full h-full pointer-events-none"
+          src={`${videoUrl}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=1&modestbranding=1&playsinline=1&rel=0&showinfo=0&enablejsapi=1&origin=${window.location.origin}`}
+          className="absolute inset-0 w-full h-full"
           frameBorder="0"
-          title=""
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          title="Instagram Reel Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
           style={{
             border: 'none',
@@ -150,7 +146,7 @@ export function InstagramVideoPlayer({
   }
 
   return (
-    <div className="relative bg-black rounded-[22.5px] overflow-hidden shadow-[0px_24px_48px_-12px_rgba(0,0,0,0.25)] w-full max-w-[360px] aspect-[9/16]">
+    <div className="relative bg-black rounded-[22.5px] overflow-hidden shadow-[0px_24px_48px_-12px_rgba(0,0,0,0.25)] w-full max-w-[320px] lg:max-w-[360px] aspect-[9/16]">
       {/* Video Element */}
       <video
         ref={videoRef}

@@ -1,127 +1,122 @@
-import { useState, useRef, useEffect, forwardRef, memo } from 'react';
+import { useState, useRef, useEffect, forwardRef, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'motion/react';
+import { useMultiAxisScroll } from '../utils/useMultiAxisScroll';
 import { Instagram, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import svgPaths from '../../imports/svg-tso0h1bvi5';
 
 // Import gallery images from Figma
-import img1 from "../../assets/img1.webp";
-import img2 from "../../assets/img2.webp";
-import img3 from "../../assets/img3.webp";
-import img4 from "../../assets/img4.webp";
-import img5 from "../../assets/img5.webp";
-import img6 from "../../assets/img6.webp";
-import img7 from "../../assets/img7.webp";
-import img8 from "../../assets/img8.webp";
-import img9 from "../../assets/img9.webp";
-import img10 from "../../assets/img10.webp";
-import img11 from "../../assets/img11.webp";
-import img12 from "../../assets/img12.webp";
-import img13 from "../../assets/img13.webp";
-import img14 from "../../assets/img14.webp";
-import img15 from "../../assets/img15.webp";
-import img16 from "../../assets/img16.webp";
-import img17 from "../../assets/img17.webp";
-import img20 from "../../assets/img20.webp";
-import img22 from "../../assets/img22.webp";
-import img23 from "../../assets/img23.webp";
-import img24 from "../../assets/img24.webp";
+import imgComponent40 from "figma:asset/543f4bf8a25135f8a5309f98469cc735abb51163.png";
+import imgScreenshot from "figma:asset/d5f8b1fa2f31142d3146b34b31993458dfa20d62.png";
+import imgComponent41 from "figma:asset/fb642fa8b0498c0c18344a88c44a5659d3d9a1a7.png";
+import imgComponent42 from "figma:asset/b652f7273996c3088ffbdf6b375a00ac50d72203.png";
+import imgComponent44 from "figma:asset/1cac0798dde90459c7d50ecdaa36c478c66f709a.png";
+import imgComponent45 from "figma:asset/22dea6c44e167d98c69bc78a430be9dee74811ba.png";
+import imgComponent46 from "figma:asset/47aeaa3e673d1d2bb9b8c4e57078e17afa3e3b37.png";
+import imgGroup143726098 from "figma:asset/639a0701a47d0ff247dfd6029da5b3d5e4976a0d.png";
+import imgComponent48 from "figma:asset/e49332f3e7c1bcb35ae200ff9618a5d4cde800e5.png";
+import imgComponent49 from "figma:asset/464d9fe1b70fd273266d99bf2014729adeaada53.png";
+import imgComponent50 from "figma:asset/2a076fc1e8f572becd354b35b7727696183b5436.png";
+import imgComponent51 from "figma:asset/c568cc5308d6af54e01491f1a0397cfe754bf68d.png";
+import imgComponent52 from "figma:asset/7bc7f4a248e23f904fc8529f0c110383f1db67c0.png";
+import imgComponent53 from "figma:asset/4db06d323b51658b3160642751a1dff35e2e6663.png";
+
 // Gallery images showcasing SWIFTROOMS projects - Starting with second image from left as center
 const galleryImages = [
   {
     id: 1,
-    url: img14,
+    url: imgComponent40,
     alt: 'SWIFTROOMS premium aluminum structure project',
     location: 'SWIFTROOMS',
     description: 'Premium aluminum structure project',
   },
   {
     id: 2,
-    url: img6,
+    url: imgScreenshot,
     alt: 'Modern luxury home exterior with SWIFTROOMS aluminum installations',
     location: 'LUXURY HOME',
     description: 'Modern exterior with aluminum installations',
   },
   {
     id: 3,
-    url: img2,
+    url: imgComponent41,
     alt: 'Contemporary villa with premium aluminum windows and doors',
     location: 'CONTEMPORARY VILLA',
     description: 'Premium aluminum windows and doors',
   },
   {
     id: 4,
-    url: img8,
+    url: imgComponent42,
     alt: 'JUMEIRAH GOLF ESTATES - Luxury aluminum structure project',
     location: 'JUMEIRAH GOLF ESTATES',
     description: 'Luxury aluminum structure project',
   },
   {
     id: 5,
-    url: img24,
+    url: imgComponent44,
     alt: 'DUBAI HILLS - Premium residential aluminum installation',
     location: 'DUBAI HILLS',
     description: 'Premium residential aluminum installation',
   },
   {
     id: 6,
-    url: img17,
+    url: imgComponent45,
     alt: 'PALM JUMEIRAH - Exclusive aluminum doors and windows',
     location: 'PALM JUMEIRAH',
     description: 'Exclusive aluminum doors and windows',
   },
   {
     id: 7,
-    url: img16,
+    url: imgComponent46,
     alt: 'THE MEADOWS - High-end aluminum structure solutions',
     location: 'THE MEADOWS',
     description: 'High-end aluminum structure solutions',
   },
   {
     id: 8,
-    url: img13,
+    url: imgGroup143726098,
     alt: 'PHILLIAS FOGGS - Custom aluminum installations',
     location: 'PHILLIAS FOGGS',
     description: 'Custom aluminum installations',
   },
   {
     id: 9,
-    url: img3,
+    url: imgComponent48,
     alt: 'THE SPRINGS - Modern aluminum architectural design',
     location: 'THE SPRINGS',
     description: 'Modern aluminum architectural design',
   },
   {
     id: 10,
-    url: img15,
+    url: imgComponent49,
     alt: 'AL BARARI - THE NEST - Premium aluminum structures',
     location: 'AL BARARI - THE NEST',
     description: 'Premium aluminum structures',
   },
   {
     id: 11,
-    url: img23,
+    url: imgComponent50,
     alt: 'UMM SEQUIMM - Contemporary aluminum installations',
     location: 'UMM SEQUIMM',
     description: 'Contemporary aluminum installations',
   },
   {
     id: 12,
-    url: img7,
+    url: imgComponent51,
     alt: 'DAMAC HILLS - Luxury aluminum doors and windows',
     location: 'DAMAC HILLS',
     description: 'Luxury aluminum doors and windows',
   },
   {
     id: 13,
-    url: img20,
+    url: imgComponent52,
     alt: 'DAMAC HILLS - Modern aluminum structure project',
     location: 'DAMAC HILLS',
     description: 'Modern aluminum structure project',
   },
   {
     id: 14,
-    url: img22,
+    url: imgComponent53,
     alt: 'ARABIAN RANCHES - Premium aluminum architectural solutions',
     location: 'ARABIAN RANCHES',
     description: 'Premium aluminum architectural solutions',
@@ -259,13 +254,13 @@ const GalleryImage = forwardRef<HTMLDivElement, GalleryImageProps>(({
       onMouseLeave={handleMouseLeave}
     >
       <motion.div
-        className="relative overflow-hidden w-full h-full aspect-square"
+        className="relative overflow-hidden w-full h-full"
         style={{
           rotateX: !isDraggingImage && isCenter && isHovered ? rotateX : 0,
           rotateY: !isDraggingImage && isCenter && isHovered ? rotateY : 0,
           transformStyle: 'preserve-3d',
-          boxShadow: isCenter && isHovered 
-            ? '0 40px 80px -20px rgba(0, 136, 115, 0.5), 0 0 40px rgba(0, 136, 115, 0.3)' 
+          boxShadow: isCenter && isHovered
+            ? '0 40px 80px -20px rgba(0, 136, 115, 0.5), 0 0 40px rgba(0, 136, 115, 0.3)'
             : '0 20px 25px -5px rgba(0, 0, 0, 0.3)',
         }}
         animate={{
@@ -422,12 +417,17 @@ const GalleryImage = forwardRef<HTMLDivElement, GalleryImageProps>(({
   );
 });
 
-export const GallerySection = memo(function GallerySection() {
+export function GallerySection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  useMultiAxisScroll(scrollContainerRef);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [transitionVariant, setTransitionVariant] = useState<'fade' | 'slide' | 'zoom' | 'rotate' | 'flip'>('fade');
+  const isScrollingRef = useRef(false);
+
+  const totalImages = galleryImages.length;
+  const infiniteImages = useMemo(() => [...galleryImages, ...galleryImages, ...galleryImages], []);
 
   // Background parallax effect
   const mouseXBg = useMotionValue(0);
@@ -453,22 +453,72 @@ export const GallerySection = memo(function GallerySection() {
   const leftPatternX = useTransform(dragX, [-200, 200], [-30, 30]);
   const rightPatternX = useTransform(dragX, [-200, 200], [30, -30]);
 
-  // Handle scroll to update active dot on mobile
+  // Initialize scroll position to middle set - deferred to idle time
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
+    const idleCallback = 'requestIdleCallback' in window
+      ? window.requestIdleCallback(() => {
+          const slideWidth = container.offsetWidth;
+          const initialPosition = totalImages * slideWidth;
+          container.scrollLeft = initialPosition;
+        })
+      : window.setTimeout(() => {
+          const slideWidth = container.offsetWidth;
+          const initialPosition = totalImages * slideWidth;
+          container.scrollLeft = initialPosition;
+        }, 100);
+
+    return () => {
+      if ('cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleCallback);
+      } else {
+        clearTimeout(idleCallback);
+      }
+    };
+  }, [totalImages]);
+
+  // Handle scroll to update active dot on mobile and handle infinite loop
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let scrollTimeout: number;
+
     const handleScroll = () => {
-      const scrollLeft = container.scrollLeft;
-      const slideWidth = container.offsetWidth;
-      const newActiveSlide = Math.round(scrollLeft / slideWidth);
-      setCurrentIndex(newActiveSlide);
+      if (isScrollingRef.current) return;
+
+      clearTimeout(scrollTimeout as unknown as NodeJS.Timeout);
+      scrollTimeout = setTimeout(() => {
+        // Use requestAnimationFrame to prevent blocking main thread
+        requestAnimationFrame(() => {
+          const scrollLeft = container.scrollLeft;
+          const slideWidth = container.offsetWidth;
+          const currentPosition = Math.round(scrollLeft / slideWidth);
+
+          setCurrentIndex(currentPosition % totalImages);
+
+          // Reset position when reaching edges (with safety check)
+          if (currentPosition <= 0 && scrollLeft > 0) {
+            isScrollingRef.current = true;
+            container.scrollLeft = totalImages * slideWidth;
+            setTimeout(() => { isScrollingRef.current = false; }, 100);
+          } else if (currentPosition >= totalImages * 2 && currentPosition < totalImages * 3) {
+            isScrollingRef.current = true;
+            container.scrollLeft = totalImages * slideWidth;
+            setTimeout(() => { isScrollingRef.current = false; }, 100);
+          }
+        });
+      }, 50);
     };
 
-    // Use passive listener for better Android performance
     container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, []);
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout as unknown as NodeJS.Timeout);
+    };
+  }, [totalImages]);
 
   // Handle mouse move for background parallax
   const handleSectionMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -483,33 +533,34 @@ export const GallerySection = memo(function GallerySection() {
   };
 
   // Handle dot click to scroll to specific slide on mobile
-  const scrollToSlide = (index: number) => {
+  const scrollToSlide = useCallback((index: number) => {
     const container = scrollContainerRef.current;
     if (!container) return;
-    
+
     const slideWidth = container.offsetWidth;
+    const scrollPosition = (totalImages + index) * slideWidth;
     container.scrollTo({
-      left: slideWidth * index,
+      left: scrollPosition,
       behavior: 'smooth'
     });
-  };
+  }, [totalImages]);
 
   // Navigate to next/previous image with creative transitions
-  const goNext = () => {
+  const goNext = useCallback(() => {
     const transitions: Array<'fade' | 'slide' | 'zoom' | 'rotate' | 'flip'> = ['fade', 'slide', 'zoom', 'rotate', 'flip'];
     const randomTransition = transitions[Math.floor(Math.random() * transitions.length)]!;
     setTransitionVariant(randomTransition);
     setCurrentIndex((prev) => (prev + 1) % galleryImages.length);
     dragX.set(0);
-  };
+  }, [dragX]);
 
-  const goPrev = () => {
+  const goPrev = useCallback(() => {
     const transitions: Array<'fade' | 'slide' | 'zoom' | 'rotate' | 'flip'> = ['fade', 'slide', 'zoom', 'rotate', 'flip'];
     const randomTransition = transitions[Math.floor(Math.random() * transitions.length)]!;
     setTransitionVariant(randomTransition);
     setCurrentIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
     dragX.set(0);
-  };
+  }, [dragX]);
 
   // Handle drag with momentum and free movement
   const handleDragEnd = (_event: any, info: any) => {
@@ -577,25 +628,25 @@ export const GallerySection = memo(function GallerySection() {
     <section
       id="gallery"
       ref={sectionRef}
-      className="relative bg-gradient-to-b from-white via-gray-50 to-white min-h-screen overflow-hidden lg:snap-center flex items-center py-20 lg:py-32"
+      className="relative bg-gradient-to-b from-white via-gray-50 to-white min-h-screen lg:min-h-screen overflow-y-auto lg:overflow-visible lg:snap-start flex items-start pt-20 lg:pt-24 pb-12 lg:pb-48"
       onMouseMove={handleSectionMouseMove}
     >
       {/* Animated background elements */}
       <motion.div
-        className="absolute inset-0 opacity-30 pointer-events-none"
+        className="absolute inset-0 opacity-30 pointer-events-none z-0"
         style={{
           x: bgX,
           y: bgY,
         }}
       >
-        <div className="absolute top-20 left-10 w-32 h-32 bg-[#008873]/10 rounded-full blur-xl lg:blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-[#008873]/10 rounded-full blur-xl lg:blur-3xl" />
+        <div className="absolute top-20 left-10 w-32 h-32 bg-[#008873]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-[#008873]/10 rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-[#008873]/5 rounded-full blur-2xl" />
       </motion.div>
 
       {/* Interactive CAD Pattern Graphic - Reacts to Gallery State */}
       <motion.div
-        className="absolute inset-0 pointer-events-none overflow-hidden"
+        className="absolute inset-0 pointer-events-none overflow-hidden z-0"
         style={{
           opacity: isDragging ? 0.15 : 0.08,
         }}
@@ -831,18 +882,18 @@ export const GallerySection = memo(function GallerySection() {
         </motion.div>
       </motion.div>
 
-      <div className="relative max-w-7xl mx-auto px-8 sm:px-12 lg:px-16 w-full z-10">
+      <div className="relative max-w-7xl mx-auto px-4 lg:px-16 w-full z-30">
         {/* Header - Matching Portfolio Section Style */}
         <motion.div
-          className="text-center mb-32 lg:mb-40 mt-2 lg:mt-3"
+          className="text-center mb-6 lg:mb-12 relative z-50 bg-white/80 backdrop-blur-sm py-4 lg:py-0 lg:bg-transparent lg:backdrop-blur-none"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           {/* Heading */}
-          <motion.h2 
-            className="font-['Exo',sans-serif] font-medium text-xl lg:text-3xl text-[#1c1c1e] mb-1 lg:mb-2"
+          <motion.h2
+            className="font-['Exo',sans-serif] font-medium text-base lg:text-4xl text-[#1c1c1e] mb-1 lg:mb-2 relative z-50"
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.3 }}
           >
@@ -850,7 +901,7 @@ export const GallerySection = memo(function GallerySection() {
           </motion.h2>
 
           {/* Paragraph */}
-          <p className="font-['Barlow',sans-serif] text-xs lg:text-base text-[#3a3a3c] mb-2 lg:mb-3 px-4">
+          <p className="font-['Barlow',sans-serif] text-xs lg:text-base text-[#3a3a3c] mb-1.5 lg:mb-3 px-4 relative z-50">
             Feel free to browse our work
           </p>
 
@@ -859,12 +910,12 @@ export const GallerySection = memo(function GallerySection() {
             href="https://www.instagram.com/swiftrooms.ae/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 font-['Inter',sans-serif] text-[#008873] hover:text-[#007969] transition-colors text-xs lg:text-sm"
+            className="inline-flex items-center justify-center gap-2 font-['Inter',sans-serif] text-[#008873] hover:text-[#007969] transition-colors text-xs lg:text-sm relative z-50"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Instagram className="w-4 h-4 lg:w-5 lg:h-5" />
-            <span className="tracking-tight">
+            <Instagram className="w-3.5 h-3.5 lg:w-5 lg:h-5" />
+            <span className="tracking-tight text-[11px] lg:text-sm">
               @swiftrooms
             </span>
             <span className="text-[10px] lg:text-xs">
@@ -874,10 +925,10 @@ export const GallerySection = memo(function GallerySection() {
         </motion.div>
 
         {/* Desktop Fan Layout */}
-        <div className="hidden lg:block relative">
+        <div className="hidden lg:block relative z-30">
           {/* Draggable Container */}
           <motion.div
-            className="relative h-[600px] flex items-center justify-center select-none"
+            className="relative h-[600px] flex items-center justify-center select-none z-30"
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
@@ -902,35 +953,35 @@ export const GallerySection = memo(function GallerySection() {
                   opacity = 1;
                   zIndex = 30;
                   xOffset = 0;
-                  width = 800; // Large center image
+                  width = 550; // Reduced from 800 for small laptops
                   height = 500;
                 } else if (offset === -1) {
                   scale = 0.75;
                   opacity = 0.6;
                   zIndex = 20;
-                  xOffset = -400; // More comfortable spacing on left
-                  width = 500;
+                  xOffset = -320; // Reduced spacing for small screens
+                  width = 380; // Reduced from 500
                   height = 400;
                 } else if (offset === 1) {
                   scale = 0.75;
                   opacity = 0.7;
                   zIndex = 20;
-                  xOffset = 400; // More comfortable spacing on right
-                  width = 500;
+                  xOffset = 320; // Reduced spacing for small screens
+                  width = 380; // Reduced from 500
                   height = 400;
                 } else if (offset === -2) {
                   scale = 0.5;
                   opacity = 0.3;
                   zIndex = 10;
-                  xOffset = -660; // Generous spacing on far left
-                  width = 350;
+                  xOffset = -520; // Reduced from -660
+                  width = 280; // Reduced from 350
                   height = 300;
                 } else {
                   scale = 0.5;
                   opacity = 0.2;
                   zIndex = 10;
-                  xOffset = 660; // Generous spacing on far right
-                  width = 350;
+                  xOffset = 520; // Reduced from 660
+                  width = 280; // Reduced from 350
                   height = 300;
                 }
 
@@ -964,7 +1015,7 @@ export const GallerySection = memo(function GallerySection() {
           {/* Navigation Arrows with enhanced hover */}
           <motion.button
             onClick={goPrev}
-            className="absolute left-8 top-1/2 -translate-y-1/2 z-40 group"
+            className="absolute left-8 top-1/2 -translate-y-1/2 z-50 group"
             aria-label="Previous image"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
@@ -1089,7 +1140,7 @@ export const GallerySection = memo(function GallerySection() {
           
           <motion.button
             onClick={goNext}
-            className="absolute right-8 top-1/2 -translate-y-1/2 z-40 group"
+            className="absolute right-8 top-1/2 -translate-y-1/2 z-50 group"
             aria-label="Next image"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
@@ -1214,48 +1265,48 @@ export const GallerySection = memo(function GallerySection() {
         </div>
 
         {/* Mobile: Horizontal Scroll */}
-        <div className="lg:hidden">
+        <div className="lg:hidden relative z-30">
           <div
             ref={scrollContainerRef}
-            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4"
+            className="flex overflow-x-auto scrollbar-hide pb-3 relative z-30"
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
               WebkitOverflowScrolling: 'touch',
-              touchAction: 'pan-x',
+              touchAction: 'none',
               scrollBehavior: 'auto',
               willChange: 'scroll-position',
-              overscrollBehavior: 'contain',
+              overscrollBehavior: 'auto',
               pointerEvents: 'auto',
             }}
           >
-            {galleryImages.map((image) => (
+            {infiniteImages.map((image, index) => (
               <div
-                key={image.id}
-                className="flex-shrink-0 w-full snap-center px-2"
-                style={{ touchAction: 'pan-x' }}
+                key={`gallery-${index}`}
+                className="flex-shrink-0 w-full px-2"
+                style={{ touchAction: 'none' }}
               >
                 <div className="pointer-events-none">
                   <div className="relative overflow-hidden rounded-lg shadow-lg">
-                    <div className="relative h-[350px] overflow-hidden">
+                    <div className="relative h-[280px] overflow-hidden">
                       <ImageWithFallback
                         src={image.url}
                         alt={image.alt}
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                      
+
                       {/* Location Name Overlay - Always visible on mobile */}
-                      <div className="absolute bottom-0 left-0 right-0 p-4 pointer-events-none">
+                      <div className="absolute bottom-0 left-0 right-0 p-3 pointer-events-none">
                         <motion.div
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.4, delay: 0.2 }}
                         >
-                          <h3 className="font-['Exo',sans-serif] font-semibold text-white text-sm mb-1 tracking-wide">
+                          <h3 className="font-['Exo',sans-serif] font-semibold text-white text-xs mb-0.5 tracking-wide">
                             {image.location}
                           </h3>
-                          <p className="font-['Barlow',sans-serif] text-white/80 text-xs leading-relaxed">
+                          <p className="font-['Barlow',sans-serif] text-white/80 text-[11px] leading-relaxed">
                             {image.description}
                           </p>
                         </motion.div>
@@ -1268,15 +1319,15 @@ export const GallerySection = memo(function GallerySection() {
           </div>
 
           {/* Mobile Dots */}
-          <div className="flex justify-center gap-2 mt-6">
+          <div className="flex justify-center gap-1.5 mt-3 relative z-40">
             {galleryImages.map((_, index) => (
               <motion.button
                 key={index}
                 onClick={() => scrollToSlide(index)}
                 className={`transition-all duration-300 pointer-events-auto ${
                   currentIndex === index
-                    ? 'bg-[#008873] w-8 h-2'
-                    : 'bg-gray-300 hover:bg-[#008873]/50 w-2 h-2'
+                    ? 'bg-[#008873] w-6 h-1.5'
+                    : 'bg-gray-300 hover:bg-[#008873]/50 w-1.5 h-1.5'
                 } rounded-full`}
                 aria-label={`Go to image ${index + 1}`}
                 whileHover={{ scale: 1.2 }}
@@ -1287,7 +1338,7 @@ export const GallerySection = memo(function GallerySection() {
 
           {/* Swipe Hint */}
           <motion.p
-            className="text-center text-sm text-gray-400 mt-4 font-['Barlow',sans-serif]"
+            className="text-center text-xs text-gray-400 mt-2 font-['Barlow',sans-serif]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
@@ -1309,4 +1360,4 @@ export const GallerySection = memo(function GallerySection() {
       `}</style>
     </section>
   );
-});
+}

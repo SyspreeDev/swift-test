@@ -38,10 +38,25 @@ export function Navigation() {
   const [activeSection, setActiveSection] = useState('hero');
   const [isMobile, setIsMobile] = useState(false);
 
-  // Check if mobile on mount
+  // Check if mobile on mount - defer to idle time to prevent blocking
   useEffect(() => {
-    const mobile = window.innerWidth < 1024;
-    setIsMobile(mobile);
+    const idleCallback = 'requestIdleCallback' in window
+      ? window.requestIdleCallback(() => {
+          const mobile = window.innerWidth < 1024;
+          setIsMobile(mobile);
+        })
+      : window.setTimeout(() => {
+          const mobile = window.innerWidth < 1024;
+          setIsMobile(mobile);
+        }, 0);
+
+    return () => {
+      if ('cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleCallback);
+      } else {
+        clearTimeout(idleCallback);
+      }
+    };
   }, []);
 
   const navItems = [
@@ -56,35 +71,70 @@ export function Navigation() {
     { key: 'faqs', id: 'faqs', label: 'FAQs' },
   ];
 
-  // Intersection Observer for active section tracking - Works on both iOS and Android
+  // Intersection Observer for active section tracking - Deferred to idle time
   useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '-50% 0px -50% 0px', // Trigger when section is in the middle of viewport
-      threshold: 0
-    };
+    const idleCallback = 'requestIdleCallback' in window
+      ? window.requestIdleCallback(() => {
+          const options = {
+            root: null,
+            rootMargin: '-50% 0px -50% 0px',
+            threshold: 0
+          };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const sectionId = entry.target.id;
-          if (sectionId) {
-            setActiveSection(sectionId);
-          }
-        }
-      });
-    }, options);
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const sectionId = entry.target.id;
+                if (sectionId) {
+                  setActiveSection(sectionId);
+                }
+              }
+            });
+          }, options);
 
-    // Observe all sections
-    const sections = navItems.map(item => document.getElementById(item.id)).filter(Boolean);
-    sections.forEach(section => {
-      if (section) observer.observe(section);
-    });
+          // Observe all sections
+          const sections = navItems.map(item => document.getElementById(item.id)).filter(Boolean);
+          sections.forEach(section => {
+            if (section) observer.observe(section);
+          });
+
+          // Store cleanup function
+          return () => {
+            sections.forEach(section => {
+              if (section) observer.unobserve(section);
+            });
+          };
+        })
+      : window.setTimeout(() => {
+          const options = {
+            root: null,
+            rootMargin: '-50% 0px -50% 0px',
+            threshold: 0
+          };
+
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const sectionId = entry.target.id;
+                if (sectionId) {
+                  setActiveSection(sectionId);
+                }
+              }
+            });
+          }, options);
+
+          const sections = navItems.map(item => document.getElementById(item.id)).filter(Boolean);
+          sections.forEach(section => {
+            if (section) observer.observe(section);
+          });
+        }, 100);
 
     return () => {
-      sections.forEach(section => {
-        if (section) observer.unobserve(section);
-      });
+      if ('cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleCallback);
+      } else {
+        clearTimeout(idleCallback);
+      }
     };
   }, []);
 
@@ -185,11 +235,11 @@ export function Navigation() {
 
   return (
     <>
-      <motion.nav 
-        initial={{ y: -100, opacity: 0 }}
+      <motion.nav
+        initial={{ y: 0, opacity: 1 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 100, damping: 20, duration: 0.6 }}
         className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md"
+        style={{ willChange: 'auto' }}
       >
         <div className="container mx-auto px-4 lg:px-6">
           <div className="flex items-center justify-between h-[82px] lg:h-20">

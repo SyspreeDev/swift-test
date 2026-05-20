@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef, memo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { motion } from 'motion/react';
+import { useMultiAxisScroll } from '../utils/useMultiAxisScroll';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import svgPaths from '../../imports/svg-odqll2j1e4';
-import img21 from "../../assets/img21.png";
-import img18 from "../../assets/img18.png";
+import img4GexLogo3 from 'figma:asset/5cd65b8dd83a95980f42df07cc16764bc2c77eb0.png';
+import img5Vetro3 from 'figma:asset/17f0f5e44208889069e3800833da01d1785f5802.png';
 import { FloatingOrnament } from './FloatingOrnament';
 import { ImmersiveBackgroundAnimations } from './ImmersiveBackgroundAnimations';
 
@@ -121,45 +122,102 @@ function BrandLogo({ children, name }: BrandLogoProps) {
   );
 }
 
-export const BrandsSection = memo(function BrandsSection() {
+export function BrandsSection() {
   const [activeSlide, setActiveSlide] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  useMultiAxisScroll(scrollContainerRef);
+  const isScrollingRef = useRef(false);
 
-  const brands = [
+  const brands = useMemo(() => [
     { name: 'SCHÜCO', component: <SchucoLogo /> },
     { name: 'Deceuninck', component: <DeceuninckLogo /> },
-    { name: 'Gulf Extrusions (GEX)', component: <img src={img21} alt="Gulf Extrusions (GEX)" className="w-full h-full object-contain" /> },
-    { name: 'VETROMAX', component: <img src={img18} alt="VETROMAX Aluminium Minimalist Systems" className="w-full h-full object-contain" /> },
+    { name: 'Gulf Extrusions (GEX)', component: <img src={img4GexLogo3} alt="Gulf Extrusions (GEX)" className="w-full h-full object-contain" loading="lazy" /> },
+    { name: 'VETROMAX', component: <img src={img5Vetro3} alt="VETROMAX Aluminium Minimalist Systems" className="w-full h-full object-contain" loading="lazy" /> },
     { name: 'CORTIZO', component: <CortizoLogo /> },
-  ];
+  ], []);
 
-  // Handle scroll to update active dot on mobile
+  const totalBrands = brands.length;
+  const infiniteBrands = useMemo(() => [...brands, ...brands, ...brands], [brands]);
+
+  // Initialize scroll position to middle set - deferred to idle time
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    const handleScroll = () => {
-      const scrollLeft = container.scrollLeft;
-      const slideWidth = container.offsetWidth;
-      const newActiveSlide = Math.round(scrollLeft / slideWidth);
-      setActiveSlide(newActiveSlide);
+    const idleCallback = 'requestIdleCallback' in window
+      ? window.requestIdleCallback(() => {
+          const slideWidth = container.offsetWidth;
+          const initialPosition = totalBrands * slideWidth;
+          container.scrollLeft = initialPosition;
+        })
+      : window.setTimeout(() => {
+          const slideWidth = container.offsetWidth;
+          const initialPosition = totalBrands * slideWidth;
+          container.scrollLeft = initialPosition;
+        }, 100);
+
+    return () => {
+      if ('cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleCallback);
+      } else {
+        clearTimeout(idleCallback);
+      }
     };
+  }, [totalBrands]);
 
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Handle dot click to scroll to specific slide
-  const scrollToSlide = (index: number) => {
+  // Handle scroll to update active dot on mobile and handle infinite loop
+  useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
-    
+
+    let scrollTimeout: number;
+
+    const handleScroll = () => {
+      if (isScrollingRef.current) return;
+
+      clearTimeout(scrollTimeout as unknown as NodeJS.Timeout);
+      scrollTimeout = setTimeout(() => {
+        // Use requestAnimationFrame to prevent blocking main thread
+        requestAnimationFrame(() => {
+          const scrollLeft = container.scrollLeft;
+          const slideWidth = container.offsetWidth;
+          const currentPosition = Math.round(scrollLeft / slideWidth);
+
+          setActiveSlide(currentPosition % totalBrands);
+
+          // Reset position when reaching edges (with safety check)
+          if (currentPosition <= 0 && scrollLeft > 0) {
+            isScrollingRef.current = true;
+            container.scrollLeft = totalBrands * slideWidth;
+            setTimeout(() => { isScrollingRef.current = false; }, 100);
+          } else if (currentPosition >= totalBrands * 2 && currentPosition < totalBrands * 3) {
+            isScrollingRef.current = true;
+            container.scrollLeft = totalBrands * slideWidth;
+            setTimeout(() => { isScrollingRef.current = false; }, 100);
+          }
+        });
+      }, 50);
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout as unknown as NodeJS.Timeout);
+    };
+  }, [totalBrands]);
+
+  // Handle dot click to scroll to specific slide
+  const scrollToSlide = useCallback((index: number) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
     const slideWidth = container.offsetWidth;
+    const scrollPosition = (totalBrands + index) * slideWidth;
     container.scrollTo({
-      left: slideWidth * index,
+      left: scrollPosition,
       behavior: 'smooth'
     });
-  };
+  }, [totalBrands]);
 
   const settings = {
     dots: false,
@@ -195,7 +253,7 @@ export const BrandsSection = memo(function BrandsSection() {
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="font-['Exo',sans-serif] text-xl lg:text-4xl font-medium text-white uppercase tracking-wide">
+          <h2 className="font-['Exo',sans-serif] text-base lg:text-4xl font-medium text-white tracking-wide">
             Brands We Work With
           </h2>
         </motion.div>
@@ -204,23 +262,23 @@ export const BrandsSection = memo(function BrandsSection() {
         <div className="lg:hidden">
           <div
             ref={scrollContainerRef}
-            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+            className="flex overflow-x-auto scrollbar-hide"
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
               WebkitOverflowScrolling: 'touch',
-              touchAction: 'pan-x',
+              touchAction: 'none',
               scrollBehavior: 'auto',
               willChange: 'scroll-position',
-              overscrollBehavior: 'contain',
+              overscrollBehavior: 'auto',
               pointerEvents: 'auto',
             }}
           >
-            {brands.map((brand, index) => (
+            {infiniteBrands.map((brand, index) => (
               <div
-                key={index}
-                className="flex-shrink-0 min-w-[80vw] max-w-[80vw] snap-center px-2"
-                style={{ touchAction: 'pan-x' }}
+                key={`brand-${index}`}
+                className="flex-shrink-0 w-full px-2"
+                style={{ touchAction: 'none' }}
               >
                 <div className="pointer-events-none">
                   <BrandLogo name={brand.name}>
@@ -292,4 +350,4 @@ export const BrandsSection = memo(function BrandsSection() {
       `}</style>
     </section>
   );
-});
+}

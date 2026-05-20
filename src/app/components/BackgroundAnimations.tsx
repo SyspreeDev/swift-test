@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, useMotionValue } from 'motion/react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { CadLogo } from './CadLogo';
-import { useMouse } from '../context/Mousecontext';
+import { throttle } from '../utils/performance';
 
 export function BackgroundAnimations() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const { smoothX, smoothY } = useMouse();
   const { scrollYProgress } = useScroll();
   
   // Create different parallax layers based on scroll
@@ -17,19 +16,17 @@ export function BackgroundAnimations() {
   const rotate2 = useTransform(scrollYProgress, [0, 1], [0, -90]);
 
   useEffect(() => {
-    const unsubscribeX = smoothX.onChange((latest) => {
-      setMousePosition(prev => ({ ...prev, x: (latest / window.innerWidth) * 2 - 1 }));
-    });
-    
-    const unsubscribeY = smoothY.onChange((latest) => {
-      setMousePosition(prev => ({ ...prev, y: (latest / window.innerHeight) * 2 - 1 }));
-    });
+    // THROTTLED mouse movement
+    const handleMouseMove = throttle((e: MouseEvent) => {
+      // Normalize mouse position from -1 to 1
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = (e.clientY / window.innerHeight) * 2 - 1;
+      setMousePosition({ x, y });
+    }, 100); // Throttle to 10fps
 
-    return () => {
-      unsubscribeX();
-      unsubscribeY();
-    };
-  }, [smoothX, smoothY]);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">

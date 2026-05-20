@@ -1,16 +1,15 @@
-import { useState, useRef, useEffect, memo } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useMultiAxisScroll } from '../utils/useMultiAxisScroll';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Slider from 'react-slick';
 import { ProductsCADElements } from './CADFloatingElements';
 import { CTADecoration } from './InteractiveDecorations';
-import img1 from "../../assets/img1.png";
-import img2 from "../../assets/img2.png";
-import img3 from "../../assets/img3.png";
-import img4 from "../../assets/img4.png";
-import img5 from "../../assets/img5.png";
-import img9 from "../../assets/img9.png";
-import img11 from "../../assets/img11.png";
+import imgImageAluminumSlidingDoors from "figma:asset/d6422ad60ba0d7acbef896831a31188dca8bc66a.png";
+import imgImageUpvcWindowsAndDoors from "figma:asset/d76e6c1b22e3f7ed8fc8e68c24b7ccfae1eb3155.png";
+import imgImageBiFoldDoors from "figma:asset/a873a74894e42cdff9ecd2c1fb02a14d38a18687.png";
+import imgImageAluminumWindows from "figma:asset/0f08c2480ba1dad0ecba17dddf82fcfe35766557.png";
+import imgImageSkylights from "figma:asset/265343b936147e3cea1b239d59964ed5e2657d8a.png";
 
 interface Product {
   id: number;
@@ -25,35 +24,35 @@ const products: Product[] = [
     id: 1,
     name: 'Aluminum Sliding Doors',
     description: 'Sleek sliding doors with smooth operation, perfect for balconies and terraces.',
-    imageUrl: img4,
+    imageUrl: imgImageAluminumSlidingDoors,
     category: 'Doors'
   },
   {
     id: 2,
     name: 'Bi-Fold Doors',
     description: 'Premium folding doors that seamlessly connect indoor and outdoor spaces.',
-    imageUrl: img9,
+    imageUrl: imgImageBiFoldDoors,
     category: 'Doors'
   },
   {
     id: 3,
     name: 'Aluminum Windows',
     description: 'Energy-efficient aluminum windows with superior thermal insulation and modern design.',
-    imageUrl: img1,
+    imageUrl: imgImageAluminumWindows,
     category: 'Windows'
   },
   {
     id: 4,
     name: 'UPVC Windows and Doors',
     description: 'Low-maintenance UPVC windows and doors with exceptional durability, thermal efficiency, and security features.',
-    imageUrl: img5,
+    imageUrl: imgImageUpvcWindowsAndDoors,
     category: 'Windows & Doors'
   },
   {
     id: 5,
     name: 'Skylights and Garden Rooms',
     description: 'Premium roof windows and skylights that flood interiors with natural light.',
-    imageUrl: img11,
+    imageUrl: imgImageSkylights,
     category: 'Outdoor Spaces'
   },
 ];
@@ -66,7 +65,7 @@ function NextArrow({ onClick }: ArrowProps) {
   return (
     <button
       onClick={onClick}
-      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-3 shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px]"
+      className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
       aria-label="Next slide"
     >
       <ChevronRight className="w-6 h-6" />
@@ -78,7 +77,7 @@ function PrevArrow({ onClick }: ArrowProps) {
   return (
     <button
       onClick={onClick}
-      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-3 shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px]"
+      className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
       aria-label="Previous slide"
     >
       <ChevronLeft className="w-6 h-6" />
@@ -90,7 +89,7 @@ interface ProductCardProps {
   product: Product;
 }
 
-function ProductCard({ product }: ProductCardProps) {
+const ProductCard = memo(({ product }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -99,27 +98,31 @@ function ProductCard({ product }: ProductCardProps) {
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    const handleResize = () => checkMobile();
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleTouchStart = () => {
+  const handleTouchStart = useCallback(() => {
     setIsTouched(true);
     setIsHovered(true);
-  };
+  }, []);
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     setTimeout(() => {
       setIsTouched(false);
       setIsHovered(false);
-    }, 3000); // Keep content visible for 3 seconds on mobile
-  };
+    }, 3000);
+  }, []);
 
   // Get image positioning styles based on product ID (matching Figma design board)
   const getImageStyle = () => {
     switch (product.id) {
       case 1: // Aluminum Sliding Doors
-        return { className: 'absolute inset-0 max-w-none object-cover pointer-events-none size-full' };
+        return {
+          className: 'absolute max-w-none pointer-events-none w-full',
+          style: { height: '120%', left: '0', top: '-10%' }
+        };
       case 2: // Bi-Fold Doors
         return { 
           className: 'absolute max-w-none pointer-events-none w-full',
@@ -241,40 +244,104 @@ function ProductCard({ product }: ProductCardProps) {
       </motion.div>
     </div>
   );
-}
+});
 
-export const ProductsSection = memo(function ProductsSection() {
+ProductCard.displayName = 'ProductCard';
+
+export function ProductsSection() {
   const [activeSlide, setActiveSlide] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  useMultiAxisScroll(scrollContainerRef);
+  const isScrollingRef = useRef(false);
 
-  // Handle scroll to update active dot on mobile
+  const totalProducts = products.length;
+  const infiniteProducts = useMemo(() => [...products, ...products, ...products], []);
+
+  // Initialize scroll position to middle set - deferred to idle time
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    const handleScroll = () => {
-      const scrollLeft = container.scrollLeft;
-      const slideWidth = container.offsetWidth;
-      const newActiveSlide = Math.round(scrollLeft / slideWidth);
-      setActiveSlide(newActiveSlide);
+    // Use requestIdleCallback for non-critical initialization
+    const idleCallback = 'requestIdleCallback' in window
+      ? window.requestIdleCallback(() => {
+          const slideWidth = container.offsetWidth;
+          const initialPosition = totalProducts * slideWidth;
+          container.scrollLeft = initialPosition;
+        })
+      : window.setTimeout(() => {
+          const slideWidth = container.offsetWidth;
+          const initialPosition = totalProducts * slideWidth;
+          container.scrollLeft = initialPosition;
+        }, 100);
+
+    return () => {
+      if ('cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleCallback);
+      } else {
+        clearTimeout(idleCallback);
+      }
     };
+  }, [totalProducts]);
 
-    // Use passive listener for better Android performance
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Handle dot click to scroll to specific slide
-  const scrollToSlide = (index: number) => {
+  // Handle scroll to update active dot on mobile and handle infinite loop
+  useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
-    
+
+    let scrollTimeout: number;
+    let rafId: number;
+
+    const handleScroll = () => {
+      if (isScrollingRef.current) return;
+
+      // Cancel any pending animation frame
+      if (rafId) cancelAnimationFrame(rafId);
+
+      clearTimeout(scrollTimeout as unknown as NodeJS.Timeout);
+      scrollTimeout = setTimeout(() => {
+        // Use requestAnimationFrame to prevent blocking
+        rafId = requestAnimationFrame(() => {
+          const scrollLeft = container.scrollLeft;
+          const slideWidth = container.offsetWidth;
+          const currentPosition = Math.round(scrollLeft / slideWidth);
+
+          setActiveSlide(currentPosition % totalProducts);
+
+          // Reset position when reaching edges (with safety check)
+          if (currentPosition <= 0 && scrollLeft > 0) {
+            isScrollingRef.current = true;
+            container.scrollLeft = totalProducts * slideWidth;
+            setTimeout(() => { isScrollingRef.current = false; }, 100);
+          } else if (currentPosition >= totalProducts * 2 && currentPosition < totalProducts * 3) {
+            isScrollingRef.current = true;
+            container.scrollLeft = totalProducts * slideWidth;
+            setTimeout(() => { isScrollingRef.current = false; }, 100);
+          }
+        });
+      }, 50);
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout as unknown as NodeJS.Timeout);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [totalProducts]);
+
+  // Handle dot click to scroll to specific slide
+  const scrollToSlide = useCallback((index: number) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
     const slideWidth = container.offsetWidth;
+    const scrollPosition = (totalProducts + index) * slideWidth;
     container.scrollTo({
-      left: slideWidth * index,
+      left: scrollPosition,
       behavior: 'smooth'
     });
-  };
+  }, [totalProducts]);
 
   const settings = {
     dots: true,
@@ -299,7 +366,15 @@ export const ProductsSection = memo(function ProductsSection() {
   };
 
   return (
-    <section id="products" className="relative bg-gray-50 min-h-screen overflow-hidden lg:snap-center flex items-center">
+    <section
+      id="products"
+      className="relative bg-gray-50 min-h-screen overflow-hidden lg:snap-center flex items-center"
+      style={{
+        contain: 'layout style',
+        contentVisibility: 'auto',
+        containIntrinsicSize: '1px 100vh',
+      }}
+    >
       {/* CAD Floating Elements */}
       <ProductsCADElements />
       
@@ -324,23 +399,23 @@ export const ProductsSection = memo(function ProductsSection() {
         <div className="lg:hidden">
           <div
             ref={scrollContainerRef}
-            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4"
+            className="flex overflow-x-auto scrollbar-hide pb-4"
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
               WebkitOverflowScrolling: 'touch',
-              touchAction: 'pan-x',
+              touchAction: 'none',
               scrollBehavior: 'auto',
               willChange: 'scroll-position',
-              overscrollBehavior: 'contain',
+              overscrollBehavior: 'auto',
               pointerEvents: 'auto',
             }}
           >
-            {products.map((product, index) => (
+            {infiniteProducts.map((product, index) => (
               <div
-                key={product.id}
-                className="flex-shrink-0 min-w-[80vw] max-w-[80vw] snap-center px-2"
-                style={{ touchAction: 'pan-x' }}
+                key={`product-${index}`}
+                className="flex-shrink-0 w-full px-2"
+                style={{ touchAction: 'none' }}
               >
                 <div className="pointer-events-none">
                   <ProductCard product={product} />
@@ -429,4 +504,4 @@ export const ProductsSection = memo(function ProductsSection() {
       `}</style>
     </section>
   );
-});
+}

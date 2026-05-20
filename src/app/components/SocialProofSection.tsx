@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { Instagram } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useMultiAxisScroll } from '../utils/useMultiAxisScroll';
 import { InstagramVideoPlayer } from './InstagramVideoPlayer';
 import { FloatingOrnament } from './FloatingOrnament';
 import { ImmersiveBackgroundAnimations } from './ImmersiveBackgroundAnimations';
@@ -76,8 +77,13 @@ export function SocialProofSection() {
   const [activeReel, setActiveReel] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  useMultiAxisScroll(scrollContainerRef);
   const [isScrollingHorizontally, setIsScrollingHorizontally] = useState(false);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const isScrollingRef = useRef(false);
+
+  const totalReels = instagramReels.length;
+  const infiniteReels = useMemo(() => [...instagramReels, ...instagramReels, ...instagramReels], []);
 
   // Check if mobile - ONLY on mount to avoid keyboard resize issues
   useEffect(() => {
@@ -85,35 +91,87 @@ export function SocialProofSection() {
     setIsMobile(mobile);
   }, []);
 
-  // Handle scroll to update active dot on mobile
+  // Initialize scroll position to middle set - deferred to idle time
   useEffect(() => {
     if (!isMobile) return;
-    
+
     const container = scrollContainerRef.current;
     if (!container) return;
 
+    const idleCallback = 'requestIdleCallback' in window
+      ? window.requestIdleCallback(() => {
+          const slideWidth = container.offsetWidth;
+          const initialPosition = totalReels * slideWidth;
+          container.scrollLeft = initialPosition;
+        })
+      : window.setTimeout(() => {
+          const slideWidth = container.offsetWidth;
+          const initialPosition = totalReels * slideWidth;
+          container.scrollLeft = initialPosition;
+        }, 100);
+
+    return () => {
+      if ('cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleCallback);
+      } else {
+        clearTimeout(idleCallback);
+      }
+    };
+  }, [isMobile, totalReels]);
+
+  // Handle scroll to update active dot on mobile and handle infinite loop
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let scrollTimeout: number;
+
     const handleScroll = () => {
-      const scrollLeft = container.scrollLeft;
-      const slideWidth = container.offsetWidth;
-      const newActiveReel = Math.round(scrollLeft / slideWidth);
-      setActiveReel(newActiveReel);
+      if (isScrollingRef.current) return;
+
+      clearTimeout(scrollTimeout as unknown as NodeJS.Timeout);
+      scrollTimeout = setTimeout(() => {
+        // Use requestAnimationFrame to prevent blocking main thread
+        requestAnimationFrame(() => {
+          const scrollLeft = container.scrollLeft;
+          const slideWidth = container.offsetWidth;
+          const currentPosition = Math.round(scrollLeft / slideWidth);
+
+          setActiveReel(currentPosition % totalReels);
+
+          // Reset position when reaching edges (with safety check)
+          if (currentPosition <= 0 && scrollLeft > 0) {
+            isScrollingRef.current = true;
+            container.scrollLeft = totalReels * slideWidth;
+            setTimeout(() => { isScrollingRef.current = false; }, 100);
+          } else if (currentPosition >= totalReels * 2 && currentPosition < totalReels * 3) {
+            isScrollingRef.current = true;
+            container.scrollLeft = totalReels * slideWidth;
+            setTimeout(() => { isScrollingRef.current = false; }, 100);
+          }
+        });
+      }, 50);
     };
 
-    // Use passive listener for better Android performance
     container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [isMobile]);
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout as unknown as NodeJS.Timeout);
+    };
+  }, [isMobile, totalReels]);
 
   // Smart touch handling - detect horizontal vs vertical scroll
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartRef.current = {
       x: e.touches[0].clientX,
       y: e.touches[0].clientY,
     };
     setIsScrollingHorizontally(false);
-  };
+  }, []);
 
-  const handleTouchMove = (e: React.TouchEvent) => {
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!touchStartRef.current) return;
 
     const deltaX = Math.abs(e.touches[0].clientX - touchStartRef.current.x);
@@ -130,51 +188,55 @@ export function SocialProofSection() {
         setIsScrollingHorizontally(false);
       }
     }
-  };
+  }, []);
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     touchStartRef.current = null;
     setIsScrollingHorizontally(false);
-  };
+  }, []);
 
   // Handle bar click to scroll to specific slide
-  const scrollToSlide = (index: number) => {
+  const scrollToSlide = useCallback((index: number) => {
     if (isMobile) {
       const container = scrollContainerRef.current;
       if (!container) return;
-      
+
       const slideWidth = container.offsetWidth;
+      const scrollPosition = (totalReels + index) * slideWidth;
       container.scrollTo({
-        left: slideWidth * index,
+        left: scrollPosition,
         behavior: 'smooth'
       });
     } else {
       // Desktop behavior
       setActiveReel(index);
     }
-  };
+  }, [isMobile, totalReels]);
 
   return (
-    <section id="social" className="relative bg-white min-h-screen overflow-hidden lg:snap-center flex items-center">{/* Animated Background Ornaments - Only on Desktop */}
-      {!isMobile && (
-        <>
-          <FloatingOrnament position="right" size="large" animationSpeed="slow" opacity={0.05} offsetY="-45%" />
-          <FloatingOrnament position="left" size="medium" animationSpeed="fast" opacity={0.08} offsetY="-75%" />
-          <ImmersiveBackgroundAnimations />
-        </>
-      )}
-      
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 py-4 lg:py-6">
+    <section id="social" className="relative bg-white min-h-screen overflow-hidden lg:snap-start flex items-start pt-20 lg:pt-24 pb-12">
+      {/* Animated Background Ornaments - Only on Desktop */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {!isMobile && (
+          <>
+            <FloatingOrnament position="right" size="large" animationSpeed="slow" opacity={0.05} offsetY="-45%" />
+            <FloatingOrnament position="left" size="medium" animationSpeed="fast" opacity={0.08} offsetY="-75%" />
+            <ImmersiveBackgroundAnimations />
+          </>
+        )}
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-30 py-4 lg:py-6">
         {/* Header */}
         {isMobile ? (
-          <div className="relative text-center mb-4">
-            <h2 className="font-['Exo',sans-serif] text-xl font-medium text-[#1c1c1e] mb-1">
+          <div className="relative text-center mb-4 z-40">
+            <h2 className="font-['Exo',sans-serif] text-base font-medium text-[#1c1c1e] mb-1 relative z-40">
               Our Portfolio
             </h2>
-            <p className="font-['Barlow',sans-serif] text-xs text-[#3a3a3c] mb-2">
+            <p className="font-['Barlow',sans-serif] text-xs text-[#3a3a3c] mb-2 relative z-40">
               Watch our latest installations
             </p>
-            <div className="inline-flex items-center gap-1.5 font-['Inter',sans-serif] text-[#008873] cursor-default">
+            <div className="inline-flex items-center gap-1.5 font-['Inter',sans-serif] text-[#008873] cursor-default relative z-40">
               <Instagram className="w-3.5 h-3.5" />
               <span className="font-medium text-xs">@swiftrooms.ae</span>
               <span className="text-[10px]">• Follow for more</span>
@@ -182,22 +244,22 @@ export function SocialProofSection() {
           </div>
         ) : (
           <motion.div
-            className="relative text-center mb-6"
+            className="relative text-center mb-6 z-40"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-['Exo',sans-serif] lg:text-3xl font-medium text-[#1c1c1e] lg:mb-2">
+            <h2 className="font-['Exo',sans-serif] text-base lg:text-4xl font-medium text-[#1c1c1e] mb-2 lg:mb-2 relative z-40">
               Our Portfolio
             </h2>
-            <p className="font-['Barlow',sans-serif] lg:text-base text-[#3a3a3c] lg:mb-3">
+            <p className="font-['Barlow',sans-serif] text-xs lg:text-base text-[#3a3a3c] mb-2 lg:mb-3 relative z-40">
               Watch our latest installations
             </p>
-            <div className="inline-flex items-center gap-1.5 font-['Inter',sans-serif] text-[#008873] cursor-default">
-              <Instagram className="lg:w-4 lg:h-4" />
-              <span className="font-medium lg:text-sm">@swiftrooms.ae</span>
-              <span className="lg:text-xs">• Follow for more</span>
+            <div className="inline-flex items-center gap-1.5 font-['Inter',sans-serif] text-[#008873] cursor-default relative z-40">
+              <Instagram className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+              <span className="font-medium text-xs lg:text-sm">@swiftrooms.ae</span>
+              <span className="text-[10px] lg:text-xs">• Follow for more</span>
             </div>
           </motion.div>
         )}
@@ -209,28 +271,28 @@ export function SocialProofSection() {
             <div className="lg:hidden">
               <div
                 ref={scrollContainerRef}
-                className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+                className="flex overflow-x-auto scrollbar-hide"
                 style={{
                   scrollbarWidth: 'none',
                   msOverflowStyle: 'none',
                   WebkitOverflowScrolling: 'touch',
-                  touchAction: isScrollingHorizontally ? 'pan-x' : 'auto',
+                  touchAction: 'none',
                   scrollBehavior: 'auto',
                   willChange: 'scroll-position',
-                  overscrollBehavior: isScrollingHorizontally ? 'contain' : 'auto',
+                  overscrollBehavior: 'auto',
                   pointerEvents: 'auto',
                 }}
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
               >
-                {instagramReels.map((reel, index) => (
+                {infiniteReels.map((reel, index) => (
                   <div
-                    key={reel.id}
-                    className="flex-shrink-0 w-full snap-center px-2"
+                    key={`reel-${index}`}
+                    className="flex-shrink-0 w-full px-2"
                     style={{ touchAction: 'auto' }}
                   >
-                    <div className="max-w-[320px] mx-auto pointer-events-none">
+                    <div className="max-w-[320px] mx-auto">
                       <InstagramVideoPlayer
                         videoUrl={reel.videoUrl}
                         caption={reel.caption}

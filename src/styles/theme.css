@@ -209,3 +209,107 @@
     }
   }
 }
+
+/* Hide scrollbars everywhere */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Performance Optimizations */
+/* Prevent layout shifts and optimize rendering */
+section {
+  contain: layout style paint;
+  content-visibility: auto;
+  min-height: 100vh;
+}
+
+/* Reserve space for sections to prevent shifts */
+section[id] {
+  contain-intrinsic-size: auto 100vh;
+}
+
+/* GPU acceleration for animated elements */
+[class*="motion-"],
+[class*="animate-"],
+.slick-slide,
+.carousel-item {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize images for faster rendering - larger intrinsic size */
+img {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px 600px;
+  max-width: 100%;
+}
+
+/* Only apply height: auto to images that aren't explicitly sized */
+img:not([class*="h-"]):not([style*="height"]) {
+  height: auto;
+}
+
+video, iframe {
+  content-visibility: auto;
+  contain-intrinsic-size: 100vw 56.25vw; /* 16:9 aspect ratio */
+}
+
+/* Optimize carousels and sliders */
+.slick-track,
+.carousel-track {
+  will-change: transform;
+  contain: layout style paint;
+}
+
+/* Prevent layout shift on lazy loaded content */
+.lazy-loading {
+  min-height: 100vh;
+  contain: size layout paint;
+}
+
+/* Optimize scroll containers */
+[style*="overflow"] {
+  contain: layout paint;
+  will-change: scroll-position;
+}
+
+/* Prevent shifts from dynamic content */
+[class*="Suspense"] {
+  min-height: 100vh;
+  contain: size layout;
+}
+
+/* Reserve space for fixed navigation to prevent layout shift */
+nav[class*="fixed"] {
+  height: 82px;
+  contain: layout style paint;
+}
+
+@media (min-width: 1024px) {
+  nav[class*="fixed"] {
+    height: 80px;
+  }
+}
+
+/* Add space for navigation so content doesn't jump */
+body {
+  padding-top: 0;
+}
+
+/* Prevent font-swap layout shift by using system fonts initially */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Optimize first contentful paint */
+#hero {
+  contain: layout style;
+  content-visibility: auto;
+}

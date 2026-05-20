@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, memo } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
 import Slider from 'react-slick';
@@ -439,7 +439,7 @@ function NextArrow({ onClick }: ArrowProps) {
   return (
     <button
       onClick={onClick}
-      className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-2 lg:p-3 shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] active:scale-95"
+      className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-2 lg:p-3 shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
       aria-label="Next testimonial"
     >
       <ChevronRight className="w-5 h-5 lg:w-6 lg:h-6" />
@@ -451,7 +451,7 @@ function PrevArrow({ onClick }: ArrowProps) {
   return (
     <button
       onClick={onClick}
-      className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-2 lg:p-3 shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px] active:scale-95"
+      className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-[#007969] rounded-full p-2 lg:p-3 shadow-lg transition-all duration-300 hover:scale-110 active:scale-95"
       aria-label="Previous testimonial"
     >
       <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6" />
@@ -521,7 +521,7 @@ function ReviewCard({ review }: { review: Review }) {
   );
 }
 
-export const TestimonialsSection = memo(function TestimonialsSection() {
+export function TestimonialsSection() {
   const sliderRef = useRef<Slider>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [reviews, setReviews] = useState<Review[]>(CONFIG.staticReviews);
@@ -559,12 +559,14 @@ export const TestimonialsSection = memo(function TestimonialsSection() {
   }, []);
 
   return (
-    <section id="testimonials" className="relative bg-gradient-to-br from-[#f8f9fa] via-white to-[#f0f7f6] py-12 lg:py-16 lg:snap-center overflow-hidden">
+    <section id="testimonials" className="relative bg-gradient-to-br from-[#f8f9fa] via-white to-[#f0f7f6] pt-20 lg:pt-24 pb-12 lg:pb-16 lg:snap-start overflow-hidden">
       {/* CAD Elements Background */}
-      <TestimonialsCADElements />
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <TestimonialsCADElements />
+      </div>
 
       {/* Container */}
-      <div className="relative z-10 container mx-auto px-4 lg:px-6 w-full">
+      <div className="relative z-30 container mx-auto px-4 lg:px-6 w-full">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -573,7 +575,7 @@ export const TestimonialsSection = memo(function TestimonialsSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-6 lg:mb-10"
         >
-          <h2 className="font-['Exo',sans-serif] text-2xl lg:text-4xl font-bold text-[#1c1c1e] mb-2 lg:mb-3 tracking-tight">
+          <h2 className="font-['Exo',sans-serif] text-base lg:text-4xl font-medium text-[#1c1c1e] mb-2 lg:mb-3 tracking-tight">
             What Our Clients Say
           </h2>
           <p className="font-['Barlow',sans-serif] text-sm lg:text-lg text-[#6b7280] max-w-2xl mx-auto">
@@ -612,4 +614,4 @@ export const TestimonialsSection = memo(function TestimonialsSection() {
       </div>
     </section>
   );
-});
+}

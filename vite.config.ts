@@ -1,118 +1,82 @@
-// import { defineConfig } from 'vite'
-// import path from 'path'
-// import tailwindcss from '@tailwindcss/vite'
-// import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+import path from 'path'
+import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react'
 
-// export default defineConfig({
-//   plugins: [
-//     // The React and Tailwind plugins are both required for Make, even if
-//     // Tailwind is not being actively used – do not remove them
-//     react(),
-//     tailwindcss(),
-//   ],
-//   resolve: {
-//     alias: {
-//       // Alias @ to the src directory
-//       '@': path.resolve(__dirname, './src'),
-//     },
-//   },
 
-//   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
-//   assetsInclude: ['**/*.svg', '**/*.csv'],
-// })
-
-// import { defineConfig } from 'vite';
-// import path from 'path';
-// import tailwindcss from '@tailwindcss/vite';
-// import react from '@vitejs/plugin-react';
-
-// export default defineConfig({
-//   plugins: [react(), tailwindcss()],
-
-//   resolve: {
-//     alias: { '@': path.resolve(__dirname, './src') },
-//   },
-
-//   assetsInclude: ['**/*.svg', '**/*.csv'],
-
-//   build: {
-//     // Target modern browsers — smaller output, no legacy polyfills
-//     target: 'es2020',
-
-//     // Warn when any chunk exceeds 400 KB (before gzip)
-//     chunkSizeWarningLimit: 400,
-
-//     rollupOptions: {
-//       output: {
-//         /**
-//          * Manual chunk splitting — keeps vendor libraries in separate
-//          * cached chunks so a content change in your own code doesn't bust
-//          * the browser cache for React, Framer Motion, etc.
-//          */
-//         manualChunks(id) {
-//           // React core — changes almost never
-//           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
-//             return 'vendor-react';
-//           }
-//           // Framer Motion — large but stable
-//           if (id.includes('node_modules/motion') || id.includes('node_modules/framer-motion')) {
-//             return 'vendor-motion';
-//           }
-//           // Radix UI primitives — used by shadcn components
-//           if (id.includes('node_modules/@radix-ui')) {
-//             return 'vendor-radix';
-//           }
-//           // MUI (if still in the bundle — ideally remove it)
-//           if (id.includes('node_modules/@mui') || id.includes('node_modules/@emotion')) {
-//             return 'vendor-mui';
-//           }
-//           // Everything else in node_modules → vendor-misc
-//           if (id.includes('node_modules')) {
-//             return 'vendor-misc';
-//           }
-//         },
-//       },
-//     },
-//   },
-// });
-
-import { defineConfig } from 'vite';
-import path from 'path';
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
+function figmaAssetResolver() {
+  return {
+    name: 'figma-asset-resolver',
+    resolveId(id) {
+      if (id.startsWith('figma:asset/')) {
+        const filename = id.replace('figma:asset/', '')
+        return path.resolve(__dirname, 'src/assets', filename)
+      }
+    },
+  }
+}
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
-
+  plugins: [
+    figmaAssetResolver(),
+    // The React and Tailwind plugins are both required for Make, even if
+    // Tailwind is not being actively used – do not remove them
+    react(),
+    tailwindcss(),
+  ],
   resolve: {
-    alias: { 
+    alias: {
+      // Alias @ to the src directory
       '@': path.resolve(__dirname, './src'),
-      // ── THE VERCEL FIX ──
-      // Forces every library (like lucide-react) to use the exact same React instance
-      'react': path.resolve(__dirname, './node_modules/react'),
-      'react-dom': path.resolve(__dirname, './node_modules/react-dom')
     },
-    // dedupe strictly enforces single instances of React
-    dedupe: ['react', 'react-dom'] 
   },
 
+  // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
 
   build: {
-    // Target modern browsers — smaller output, no legacy polyfills
-    target: 'es2020',
-
-    // Warn when any chunk exceeds 400 KB (before gzip)
-    chunkSizeWarningLimit: 400,
-    
-    // ── INTEROP FIX ──
-    // Helps resolve CommonJS vs ESM import conflicts in vendor libraries
-    commonjsOptions: {
-      transformMixedEsModules: true, 
-    }
-    
-    // NOTE: manualChunks has been intentionally removed. 
-    // Let Vite natively handle the dependency graph to ensure React 
-    // is fully loaded before lucide-react tries to use forwardRef.
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Separate core React and dependencies
+          'react-vendor': ['react', 'react-dom'],
+          // Material-UI and Emotion (styling system)
+          'mui-vendor': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+          // Radix UI components
+          'radix-ui': [
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-alert-dialog',
+            '@radix-ui/react-aspect-ratio',
+            '@radix-ui/react-avatar',
+            '@radix-ui/react-checkbox',
+            '@radix-ui/react-collapsible',
+            '@radix-ui/react-context-menu',
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-hover-card',
+            '@radix-ui/react-label',
+            '@radix-ui/react-menubar',
+            '@radix-ui/react-navigation-menu',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-progress',
+            '@radix-ui/react-radio-group',
+            '@radix-ui/react-scroll-area',
+            '@radix-ui/react-select',
+            '@radix-ui/react-separator',
+            '@radix-ui/react-slider',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-switch',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-toggle',
+            '@radix-ui/react-toggle-group',
+            '@radix-ui/react-tooltip',
+          ],
+          // Utility and UI libraries
+          'utils-ui': ['date-fns', 'lucide-react', 'embla-carousel-react', 'motion', 'cmdk', 'class-variance-authority'],
+        },
+      },
+    },
+    // Increase chunk size warning limit to 1MB since we have many large dependencies
+    chunkSizeWarningLimit: 1000,
   },
-});
+})

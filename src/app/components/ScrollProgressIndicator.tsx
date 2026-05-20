@@ -29,7 +29,7 @@ export function ScrollProgressIndicator() {
 
   return (
     <motion.div
-      className="fixed right-4 lg:right-8 top-1/2 -translate-y-1/2 z-[40] flex flex-col items-center gap-4"
+      className="hidden lg:flex fixed right-4 lg:right-8 top-1/2 -translate-y-1/2 z-[40] flex-col items-center gap-4"
       initial={{ opacity: 0, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, delay: 1 }}

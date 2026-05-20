@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { FAQCADElements } from './CADFloatingElements';
@@ -35,7 +35,7 @@ const faqData: FAQItem[] = [
   },
 ];
 
-export const FAQSection = memo(function FAQSection() {
+export function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleFAQ = (index: number) => {
@@ -64,7 +64,7 @@ export const FAQSection = memo(function FAQSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-['Exo',sans-serif] text-2xl lg:text-5xl font-medium text-[#1c1c1e] mb-2 lg:mb-4">
+            <h2 className="font-['Exo',sans-serif] text-base lg:text-4xl font-medium text-[#1c1c1e] mb-2 lg:mb-4">
               Frequently Asked Questions
             </h2>
             <p className="font-['Barlow',sans-serif] text-sm lg:text-lg text-[#3a3a3c]">
@@ -146,4 +146,4 @@ export const FAQSection = memo(function FAQSection() {
       </div>
     </section>
   );
-});
+}
