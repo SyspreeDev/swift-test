@@ -29,59 +29,59 @@
 // // Email validation function
 // const validateEmail = (email: string): { isValid: boolean; error: string } => {
 //   if (!email) return { isValid: true, error: '' }; // Optional field
-  
+
 //   // Basic format validation
 //   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 //   if (!emailRegex.test(email)) {
 //     return { isValid: false, error: 'Please enter a valid email address' };
 //   }
-  
+
 //   // Check for disposable/temporary email domains
 //   const domain = email.split('@')[1]?.toLowerCase();
 //   if (domain && disposableEmailDomains.includes(domain)) {
 //     return { isValid: false, error: 'Temporary email addresses are not allowed' };
 //   }
-  
+
 //   // Check for suspicious patterns
 //   if (email.includes('..') || email.startsWith('.') || email.endsWith('.')) {
 //     return { isValid: false, error: 'Invalid email format' };
 //   }
-  
+
 //   return { isValid: true, error: '' };
 // };
 
 // // Phone validation function
 // const validatePhone = (phone: string, countryCode: string): { isValid: boolean; error: string } => {
 //   if (!phone) return { isValid: false, error: 'Phone number is required' };
-  
+
 //   // Remove spaces, dashes, and parentheses
 //   const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
-  
+
 //   // Check if it contains only digits
 //   if (!/^\d+$/.test(cleanPhone)) {
 //     return { isValid: false, error: 'Phone number should contain only digits' };
 //   }
-  
+
 //   // Get country config
 //   const countryConfig = countryCodes.find(c => c.code === countryCode);
 //   if (!countryConfig) {
 //     return { isValid: false, error: 'Invalid country code' };
 //   }
-  
+
 //   // Check length
 //   if (cleanPhone.length < countryConfig.minLength) {
 //     return { isValid: false, error: `Phone number too short (min ${countryConfig.minLength} digits)` };
 //   }
-  
+
 //   if (cleanPhone.length > countryConfig.maxLength) {
 //     return { isValid: false, error: `Phone number too long (max ${countryConfig.maxLength} digits)` };
 //   }
-  
+
 //   // Check for suspicious patterns (all same digit, sequential)
 //   if (/^(\d)\1+$/.test(cleanPhone)) {
 //     return { isValid: false, error: 'Invalid phone number format' };
 //   }
-  
+
 //   return { isValid: true, error: '' };
 // };
 
@@ -99,7 +99,7 @@
 //   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
 //   const [phoneError, setPhoneError] = useState('');
 //   const [emailError, setEmailError] = useState('');
-  
+
 //   const [formData, setFormData] = useState({
 //     name: '',
 //     phone: '',
@@ -128,7 +128,7 @@
 //   useEffect(() => {
 //     const mobile = window.innerWidth < 1024;
 //     setIsMobile(mobile);
-    
+
 //     // If autoOpen prop is true and on mobile, skip menu and open directly to selection
 //     if (autoOpen && mobile) {
 //       setIsFormOpen(true);
@@ -160,20 +160,20 @@
 //     if (isAndroid && isMobile) {
 //       // Store original viewport height
 //       const originalHeight = window.visualViewport?.height || window.innerHeight;
-      
+
 //       // Handle keyboard show
 //       const handleResize = () => {
 //         const currentHeight = window.visualViewport?.height || window.innerHeight;
 //         const keyboardOpen = currentHeight < originalHeight * 0.75;
 //         setKeyboardVisible(keyboardOpen);
-        
+
 //         // Scroll active input into view on Android
 //         if (keyboardOpen) {
 //           setTimeout(() => {
 //             const activeElement = document.activeElement as HTMLElement;
 //             if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.tagName === 'SELECT')) {
-//               activeElement.scrollIntoView({ 
-//                 behavior: 'smooth', 
+//               activeElement.scrollIntoView({
+//                 behavior: 'smooth',
 //                 block: 'center'
 //               });
 //             }
@@ -195,8 +195,8 @@
 //         if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT')) {
 //           setKeyboardVisible(true);
 //           setTimeout(() => {
-//             target.scrollIntoView({ 
-//               behavior: 'smooth', 
+//             target.scrollIntoView({
+//               behavior: 'smooth',
 //               block: 'center'
 //             });
 //           }, 300);
@@ -320,7 +320,7 @@
 //                   setJourneyType('showroom');
 //                   setCurrentStep(0);
 //                 }}
-//                 style={{ 
+//                 style={{
 //                   WebkitTapHighlightColor: 'rgba(0, 121, 105, 0.1)',
 //                   touchAction: 'manipulation',
 //                   userSelect: 'none',
@@ -363,7 +363,7 @@
 //                   setJourneyType('quote');
 //                   setCurrentStep(0);
 //                 }}
-//                 style={{ 
+//                 style={{
 //                   WebkitTapHighlightColor: 'rgba(0, 121, 105, 0.1)',
 //                   touchAction: 'manipulation',
 //                   userSelect: 'none',
@@ -415,13 +415,13 @@
 //                   }`}
 //                 >
 //                   <div className={`mb-3 ${
-//                     formData.projectType === type.value 
-//                       ? 'text-[#008873]' 
+//                     formData.projectType === type.value
+//                       ? 'text-[#008873]'
 //                       : 'text-[#008873] group-hover:text-[#007969]'
 //                   }`}>{type.icon}</div>
 //                   <div className={`font-['Inter',sans-serif] text-base lg:text-lg font-medium ${
-//                     formData.projectType === type.value 
-//                       ? 'text-[#008873]' 
+//                     formData.projectType === type.value
+//                       ? 'text-[#008873]'
 //                       : 'text-[#1c1c1e] group-hover:text-[#008873]'
 //                   }`}>
 //                     {type.label}
@@ -462,13 +462,13 @@
 //                   }`}
 //                 >
 //                   <div className={`mb-2 ${
-//                     formData.propertyType === type.value 
-//                       ? 'text-[#008873]' 
+//                     formData.propertyType === type.value
+//                       ? 'text-[#008873]'
 //                       : 'text-[#008873] group-hover:text-[#007969]'
 //                   }`}>{type.icon}</div>
 //                   <div className={`font-['Inter',sans-serif] text-sm lg:text-base font-medium ${
-//                     formData.propertyType === type.value 
-//                       ? 'text-[#008873]' 
+//                     formData.propertyType === type.value
+//                       ? 'text-[#008873]'
 //                       : 'text-[#1c1c1e] group-hover:text-[#008873]'
 //                   }`}>
 //                     {type.label}
@@ -493,7 +493,7 @@
 //                 Select all products you're interested in
 //               </p>
 //             </div>
-            
+
 //             {/* Selection counter */}
 //             {formData.productsNeeded.length > 0 && (
 //               <div className="bg-[#008873]/10 border border-[#008873]/20 rounded-lg px-3 py-2 inline-flex items-center gap-2">
@@ -503,7 +503,7 @@
 //                 </span>
 //               </div>
 //             )}
-            
+
 //             <div className="grid grid-cols-2 gap-2 lg:gap-4 max-h-[45vh] lg:max-h-none overflow-y-auto">
 //               {products.map((product) => {
 //                 const isSelected = formData.productsNeeded.includes(product.value);
@@ -531,15 +531,15 @@
 //                         <Check className="w-3 h-3 lg:w-4 lg:h-4 text-white" strokeWidth={3} />
 //                       </div>
 //                     )}
-                    
+
 //                     <div className={`mb-1 lg:mb-2 ${
-//                       isSelected 
-//                         ? 'text-[#008873]' 
+//                       isSelected
+//                         ? 'text-[#008873]'
 //                         : 'text-[#008873] group-hover:text-[#007969]'
 //                     }`}>{product.icon}</div>
 //                     <div className={`font-['Inter',sans-serif] text-xs lg:text-base font-medium leading-tight ${
-//                       isSelected 
-//                         ? 'text-[#008873]' 
+//                       isSelected
+//                         ? 'text-[#008873]'
 //                         : 'text-[#1c1c1e] group-hover:text-[#008873]'
 //                     }`}>
 //                       {product.label}
@@ -645,7 +645,7 @@
 //                   autoFocus
 //                 />
 //               </div>
-              
+
 //               {/* Error Message */}
 //               {phoneError && (
 //                 <div className="flex items-start gap-2 text-red-600 text-sm font-['Barlow',sans-serif]">
@@ -653,7 +653,7 @@
 //                   <span>{phoneError}</span>
 //                 </div>
 //               )}
-              
+
 //               {/* Hint Text */}
 //               {!phoneError && (
 //                 <div className="text-xs text-[#6b7280] font-['Barlow',sans-serif]">
@@ -700,7 +700,7 @@
 //                 placeholder="your@email.com"
 //                 autoFocus
 //               />
-              
+
 //               {/* Error Message */}
 //               {emailError && (
 //                 <div className="flex items-start gap-2 text-red-600 text-sm font-['Barlow',sans-serif]">
@@ -721,7 +721,7 @@
 //             <div className="w-20 h-20 lg:w-24 lg:h-24 bg-[#008873] rounded-full flex items-center justify-center mx-auto">
 //               <Check className="w-10 h-10 lg:w-12 lg:h-12 text-white" strokeWidth={3} />
 //             </div>
-            
+
 //             <div>
 //               <h3 className="font-['Exo',sans-serif] text-2xl lg:text-4xl font-semibold text-[#1c1c1e] mb-3">
 //                 Thank You, {formData.name}!
@@ -793,7 +793,7 @@
 //               onClick={() => {
 //                 // Check if mobile
 //                 const isMobile = window.innerWidth < 1024;
-                
+
 //                 // Reset form data
 //                 setFormData({
 //                   name: '',
@@ -808,12 +808,12 @@
 //                 });
 //                 setCurrentStep(-1);
 //                 setJourneyType(null);
-                
+
 //                 if (isMobile) {
 //                   // On mobile: Close form WITHOUT showing the menu button
 //                   setIsFormOpen(false);
 //                   setShowMenu(false); // Don't show "Start Your Swiftrooms Journey" button
-                  
+
 //                   // Scroll to hero section
 //                   setTimeout(() => {
 //                     const heroSection = document.getElementById('hero');
@@ -879,7 +879,7 @@
 //       {/* Show Form when opened - SIMPLIFIED FOR ANDROID */}
 //       {isFormOpen && (
 //         <div
-//           id="form" 
+//           id="form"
 //           className="bg-white rounded-2xl shadow-2xl p-5 lg:p-8 w-full relative"
 //         >
 //           {/* Progress Bar */}
@@ -920,7 +920,7 @@
 //                   Back
 //                 </button>
 //               )}
-              
+
 //               <button
 //                 type="button"
 //                 onClick={currentStep === 5 ? handleSubmit : handleNext}
@@ -942,84 +942,148 @@
 //   );
 // }
 
-
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ChevronRight, ChevronLeft, Check, ArrowRight, Building, Home, Store, DoorOpen, Columns, RectangleVertical, Grid3x3, Sun, HardHat, Wrench, MessageCircle, MapPin, Phone, Mail, Instagram, Globe, Glasses, LayoutGrid, ChevronDown, AlertCircle } from 'lucide-react';
-import svgPaths from '../../imports/svg-c8s3lgkv08';
-import svgPathsSelection from '../../imports/svg-ws080e5oua';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "motion/react";
+import {
+  ChevronRight,
+  ChevronLeft,
+  Check,
+  ArrowRight,
+  Building,
+  Home,
+  Store,
+  DoorOpen,
+  Columns,
+  RectangleVertical,
+  Grid3x3,
+  Sun,
+  HardHat,
+  Wrench,
+  MessageCircle,
+  MapPin,
+  Phone,
+  Mail,
+  Instagram,
+  Globe,
+  Glasses,
+  LayoutGrid,
+  ChevronDown,
+  AlertCircle,
+} from "lucide-react";
+import svgPaths from "../../imports/svg-c8s3lgkv08";
+import svgPathsSelection from "../../imports/svg-ws080e5oua";
 
 // Country codes for phone number validation
 const countryCodes = [
-  { code: '+971', country: 'UAE', flag: '🇦🇪', minLength: 9, maxLength: 9 },
-  { code: '+966', country: 'Saudi Arabia', flag: '🇸🇦', minLength: 9, maxLength: 9 },
-  { code: '+974', country: 'Qatar', flag: '🇶🇦', minLength: 8, maxLength: 8 },
-  { code: '+965', country: 'Kuwait', flag: '🇰🇼', minLength: 8, maxLength: 8 },
-  { code: '+973', country: 'Bahrain', flag: '🇧🇭', minLength: 8, maxLength: 8 },
-  { code: '+968', country: 'Oman', flag: '🇴🇲', minLength: 8, maxLength: 8 },
-  { code: '+91', country: 'India', flag: '🇮🇳', minLength: 10, maxLength: 10 },
-  { code: '+92', country: 'Pakistan', flag: '🇵🇰', minLength: 10, maxLength: 10 },
-  { code: '+20', country: 'Egypt', flag: '🇪🇬', minLength: 10, maxLength: 10 },
-  { code: '+44', country: 'UK', flag: '🇧', minLength: 10, maxLength: 10 },
-  { code: '+1', country: 'USA/Canada', flag: '🇺🇸', minLength: 10, maxLength: 10 },
+  { code: "+971", country: "UAE", flag: "🇦🇪", minLength: 9, maxLength: 9 },
+  {
+    code: "+966",
+    country: "Saudi Arabia",
+    flag: "🇸🇦",
+    minLength: 9,
+    maxLength: 9,
+  },
+  { code: "+974", country: "Qatar", flag: "🇶🇦", minLength: 8, maxLength: 8 },
+  { code: "+965", country: "Kuwait", flag: "🇰🇼", minLength: 8, maxLength: 8 },
+  { code: "+973", country: "Bahrain", flag: "🇧🇭", minLength: 8, maxLength: 8 },
+  { code: "+968", country: "Oman", flag: "🇴🇲", minLength: 8, maxLength: 8 },
+  { code: "+91", country: "India", flag: "🇮🇳", minLength: 10, maxLength: 10 },
+  {
+    code: "+92",
+    country: "Pakistan",
+    flag: "🇵🇰",
+    minLength: 10,
+    maxLength: 10,
+  },
+  { code: "+20", country: "Egypt", flag: "🇪🇬", minLength: 10, maxLength: 10 },
+  { code: "+44", country: "UK", flag: "🇧", minLength: 10, maxLength: 10 },
+  {
+    code: "+1",
+    country: "USA/Canada",
+    flag: "🇺🇸",
+    minLength: 10,
+    maxLength: 10,
+  },
 ];
 
 // Disposable email domains to block (common spam domains)
 const disposableEmailDomains = [
-  '10minutemail.com', 'guerrillamail.com', 'mailinator.com', 'tempmail.com',
-  'throwaway.email', 'temp-mail.org', 'yopmail.com', 'getnada.com',
-  'fakeinbox.com', 'maildrop.cc', 'trashmail.com', 'mailnesia.com',
+  "10minutemail.com",
+  "guerrillamail.com",
+  "mailinator.com",
+  "tempmail.com",
+  "throwaway.email",
+  "temp-mail.org",
+  "yopmail.com",
+  "getnada.com",
+  "fakeinbox.com",
+  "maildrop.cc",
+  "trashmail.com",
+  "mailnesia.com",
 ];
 
 // Email validation function
 const validateEmail = (email: string): { isValid: boolean; error: string } => {
-  if (!email) return { isValid: true, error: '' }; // Optional field
+  if (!email) return { isValid: true, error: "" }; // Optional field
 
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailRegex.test(email)) {
-    return { isValid: false, error: 'Please enter a valid email address' };
+    return { isValid: false, error: "Please enter a valid email address" };
   }
 
-  const domain = email.split('@')[1]?.toLowerCase();
+  const domain = email.split("@")[1]?.toLowerCase();
   if (domain && disposableEmailDomains.includes(domain)) {
-    return { isValid: false, error: 'Temporary email addresses are not allowed' };
+    return {
+      isValid: false,
+      error: "Temporary email addresses are not allowed",
+    };
   }
 
-  if (email.includes('..') || email.startsWith('.') || email.endsWith('.')) {
-    return { isValid: false, error: 'Invalid email format' };
+  if (email.includes("..") || email.startsWith(".") || email.endsWith(".")) {
+    return { isValid: false, error: "Invalid email format" };
   }
 
-  return { isValid: true, error: '' };
+  return { isValid: true, error: "" };
 };
 
 // Phone validation function
-const validatePhone = (phone: string, countryCode: string): { isValid: boolean; error: string } => {
-  if (!phone) return { isValid: false, error: 'Phone number is required' };
+const validatePhone = (
+  phone: string,
+  countryCode: string,
+): { isValid: boolean; error: string } => {
+  if (!phone) return { isValid: false, error: "Phone number is required" };
 
-  const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
+  const cleanPhone = phone.replace(/[\s\-\(\)]/g, "");
 
   if (!/^\d+$/.test(cleanPhone)) {
-    return { isValid: false, error: 'Phone number should contain only digits' };
+    return { isValid: false, error: "Phone number should contain only digits" };
   }
 
-  const countryConfig = countryCodes.find(c => c.code === countryCode);
+  const countryConfig = countryCodes.find((c) => c.code === countryCode);
   if (!countryConfig) {
-    return { isValid: false, error: 'Invalid country code' };
+    return { isValid: false, error: "Invalid country code" };
   }
 
   if (cleanPhone.length < countryConfig.minLength) {
-    return { isValid: false, error: `Phone number too short (min ${countryConfig.minLength} digits)` };
+    return {
+      isValid: false,
+      error: `Phone number too short (min ${countryConfig.minLength} digits)`,
+    };
   }
 
   if (cleanPhone.length > countryConfig.maxLength) {
-    return { isValid: false, error: `Phone number too long (max ${countryConfig.maxLength} digits)` };
+    return {
+      isValid: false,
+      error: `Phone number too long (max ${countryConfig.maxLength} digits)`,
+    };
   }
 
   if (/^(\d)\1+$/.test(cleanPhone)) {
-    return { isValid: false, error: 'Invalid phone number format' };
+    return { isValid: false, error: "Invalid phone number format" };
   }
 
-  return { isValid: true, error: '' };
+  return { isValid: true, error: "" };
 };
 
 // Extracted WhatsApp message builder
@@ -1030,31 +1094,43 @@ const getWhatsAppMessage = (
   prods: any[],
   projTypes: any[],
 ) => {
-  const propertyLabel = pTypes.find(p => p.value === data.propertyType)?.label || 'Not specified';
-  const projectLabel = projTypes.find(p => p.value === data.projectType)?.label || 'Not specified';
+  const propertyLabel =
+    pTypes.find((p) => p.value === data.propertyType)?.label || "Not specified";
+  const projectLabel =
+    projTypes.find((p) => p.value === data.projectType)?.label ||
+    "Not specified";
   const productsLabel =
     data.productsNeeded
-      .map((val: string) => prods.find(p => p.value === val)?.label)
+      .map((val: string) => prods.find((p) => p.value === val)?.label)
       .filter(Boolean)
-      .join(', ') || 'Not specified';
+      .join(", ") || "Not specified";
 
   return encodeURIComponent(
     `Thank you for your enquiry. Our team will be in touch shortly, however you are welcome to contact us directly at any time.\n\n` +
-    `YOUR INQUIRY DETAILS:\n` +
-    `Name: ${data.name}\n` +
-    `Phone: ${countryCode} ${data.phone}\n` +
-    `Email: ${data.email || 'Not provided'}\n` +
-    `Property Type: ${propertyLabel}\n` +
-    `Products Needed: ${productsLabel}\n` +
-    `Project Type: ${projectLabel}\n\n` +
-    `---\n\n` +
-    `Showroom Location: ETJAR – J1 Complex, Block A, Warehouse 11 & 12, Jebel Ali Industrial Area 1, Dubai.\n\n` +
-    `Call on +971 4 347 4240, or visit www.swiftrooms.ae\n` +
-    `The Swiftrooms Team`,
+      `YOUR INQUIRY DETAILS:\n` +
+      `Name: ${data.name}\n` +
+      `Phone: ${countryCode} ${data.phone}\n` +
+      `Email: ${data.email || "Not provided"}\n` +
+      `Property Type: ${propertyLabel}\n` +
+      `Products Needed: ${productsLabel}\n` +
+      `Project Type: ${projectLabel}\n\n` +
+      `---\n\n` +
+      `Showroom Location: ETJAR – J1 Complex, Block A, Warehouse 11 & 12, Jebel Ali Industrial Area 1, Dubai.\n\n` +
+      `Call on +971 4 347 4240, or visit www.swiftrooms.ae\n` +
+      `The Swiftrooms Team`,
   );
 };
 
-export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?: boolean; ctaVariant?: 'green' | 'white' }) {
+export function LeadForm({
+  autoOpen = false,
+  ctaVariant = "green",
+}: {
+  
+  autoOpen?: boolean;
+  ctaVariant?: "green" | "white";
+}) 
+
+{
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(true);
   const [currentStep, setCurrentStep] = useState(-1); // Start at -1 for selection screen
@@ -1063,54 +1139,111 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
   const [isAndroid, setIsAndroid] = useState(false);
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [journeyType, setJourneyType] = useState<'showroom' | 'quote' | null>(null);
-  const [selectedCountryCode, setSelectedCountryCode] = useState('+971'); // Default to UAE
+  const [journeyType, setJourneyType] = useState<"showroom" | "quote" | null>(
+    null,
+  );
+  const [selectedCountryCode, setSelectedCountryCode] = useState("+971"); // Default to UAE
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-  const [phoneError, setPhoneError] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [phoneError, setPhoneError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    propertyType: '',
+    name: "",
+    phone: "",
+    email: "",
+    propertyType: "",
     productsNeeded: [] as string[],
-    projectType: '',
-    message: '',
+    projectType: "",
+    message: "",
     privacyConsent: false,
     marketingConsent: false,
   });
 
   const propertyTypes = [
-    { value: 'apartment', label: 'Apartment', icon: <Building className="w-6 h-6 lg:w-7 lg:h-7" /> },
-    { value: 'villa', label: 'Villa or Townhouse', icon: <Home className="w-6 h-6 lg:w-7 lg:h-7" /> },
-    { value: 'commercial', label: 'Commercial Property', icon: <Store className="w-6 h-6 lg:w-7 lg:h-7" /> },
+    {
+      value: "apartment",
+      label: "Apartment",
+      icon: <Building className="w-6 h-6 lg:w-7 lg:h-7" />,
+    },
+    {
+      value: "villa",
+      label: "Villa or Townhouse",
+      icon: <Home className="w-6 h-6 lg:w-7 lg:h-7" />,
+    },
+    {
+      value: "commercial",
+      label: "Commercial Property",
+      icon: <Store className="w-6 h-6 lg:w-7 lg:h-7" />,
+    },
   ];
 
   const products = [
-    { value: 'aluminum-sliding-doors', label: 'Aluminum Sliding Doors', icon: <DoorOpen className="w-6 h-6 lg:w-7 lg:h-7" /> },
-    { value: 'bifold-doors', label: 'Bi-Fold Doors', icon: <Columns className="w-6 h-6 lg:w-7 lg:h-7" /> },
-    { value: 'aluminum-windows', label: 'Aluminum Windows', icon: <Grid3x3 className="w-6 h-6 lg:w-7 lg:h-7" /> },
-    { value: 'upvc-windows-doors', label: 'UPVC Windows and Doors', icon: <RectangleVertical className="w-6 h-6 lg:w-7 lg:h-7" /> },
-    { value: 'skylights', label: 'Skylights and Garden Rooms', icon: <Sun className="w-6 h-6 lg:w-7 lg:h-7" /> },
+    {
+      value: "aluminum-sliding-doors",
+      label: "Aluminum Sliding Doors",
+      icon: <DoorOpen className="w-6 h-6 lg:w-7 lg:h-7" />,
+    },
+    {
+      value: "bifold-doors",
+      label: "Bi-Fold Doors",
+      icon: <Columns className="w-6 h-6 lg:w-7 lg:h-7" />,
+    },
+    {
+      value: "aluminum-windows",
+      label: "Aluminum Windows",
+      icon: <Grid3x3 className="w-6 h-6 lg:w-7 lg:h-7" />,
+    },
+    {
+      value: "upvc-windows-doors",
+      label: "UPVC Windows and Doors",
+      icon: <RectangleVertical className="w-6 h-6 lg:w-7 lg:h-7" />,
+    },
+    {
+      value: "skylights",
+      label: "Skylights and Garden Rooms",
+      icon: <Sun className="w-6 h-6 lg:w-7 lg:h-7" />,
+    },
   ];
 
   const projectTypes = [
-    { value: 'new-build', label: 'New Build', icon: <HardHat className="w-6 h-6 lg:w-7 lg:h-7" /> },
-    { value: 'renovation', label: 'Renovation Project', icon: <Wrench className="w-6 h-6 lg:w-7 lg:h-7" /> },
+    {
+      value: "new-build",
+      label: "New Build",
+      icon: <HardHat className="w-6 h-6 lg:w-7 lg:h-7" />,
+    },
+    {
+      value: "renovation",
+      label: "Renovation Project",
+      icon: <Wrench className="w-6 h-6 lg:w-7 lg:h-7" />,
+    },
   ];
 
   const totalSteps = 6;
 
   // ── Auto-redirect to /thank-you after 5s on the confirmation step ──
-  useEffect(() => {
-    if (currentStep === totalSteps) {
-      const timer = setTimeout(() => {
-        // window.location.href = '/thank-you';
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [currentStep]);
+useEffect(() => {
+  if (currentStep === totalSteps) {
+    localStorage.setItem(
+      "leadData",
+      JSON.stringify({
+        formData,
+        selectedCountryCode,
+      })
+    );
+
+    const timer = setTimeout(() => {
+      navigate("/thank-you", {
+        state: {
+          formData,
+          selectedCountryCode,
+        },
+      });
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }
+}, [currentStep]);
 
   // Listen for custom event to open form from navigation
   useEffect(() => {
@@ -1120,8 +1253,8 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
       setCurrentStep(-1);
     };
 
-    window.addEventListener('openLeadForm', handleOpenForm);
-    return () => window.removeEventListener('openLeadForm', handleOpenForm);
+    window.addEventListener("openLeadForm", handleOpenForm);
+    return () => window.removeEventListener("openLeadForm", handleOpenForm);
   }, []);
 
   // Check if mobile and handle autoOpen behavior - ONLY ON MOUNT
@@ -1145,8 +1278,8 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
       setIsMobile(window.innerWidth < 1024);
     };
     updateMobileState();
-    window.addEventListener('resize', updateMobileState);
-    return () => window.removeEventListener('resize', updateMobileState);
+    window.addEventListener("resize", updateMobileState);
+    return () => window.removeEventListener("resize", updateMobileState);
   }, []);
 
   // Detect Android and keyboard visibility
@@ -1155,36 +1288,51 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
     setIsAndroid(isAndroid);
 
     if (isAndroid && isMobile) {
-      const originalHeight = window.visualViewport?.height || window.innerHeight;
+      const originalHeight =
+        window.visualViewport?.height || window.innerHeight;
 
       const handleResize = () => {
-        const currentHeight = window.visualViewport?.height || window.innerHeight;
+        const currentHeight =
+          window.visualViewport?.height || window.innerHeight;
         const keyboardOpen = currentHeight < originalHeight * 0.75;
         setKeyboardVisible(keyboardOpen);
 
         if (keyboardOpen) {
           setTimeout(() => {
             const activeElement = document.activeElement as HTMLElement;
-            if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.tagName === 'SELECT')) {
-              activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (
+              activeElement &&
+              (activeElement.tagName === "INPUT" ||
+                activeElement.tagName === "TEXTAREA" ||
+                activeElement.tagName === "SELECT")
+            ) {
+              activeElement.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
             }
           }, 300);
         }
       };
 
       if (window.visualViewport) {
-        window.visualViewport.addEventListener('resize', handleResize);
-        window.visualViewport.addEventListener('scroll', handleResize);
+        window.visualViewport.addEventListener("resize", handleResize);
+        window.visualViewport.addEventListener("scroll", handleResize);
       } else {
-        window.addEventListener('resize', handleResize);
+        window.addEventListener("resize", handleResize);
       }
 
       const handleFocus = (e: FocusEvent) => {
         const target = e.target as HTMLElement;
-        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT')) {
+        if (
+          target &&
+          (target.tagName === "INPUT" ||
+            target.tagName === "TEXTAREA" ||
+            target.tagName === "SELECT")
+        ) {
           setKeyboardVisible(true);
           setTimeout(() => {
-            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
           }, 300);
         }
       };
@@ -1197,18 +1345,18 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
         }, 100);
       };
 
-      document.addEventListener('focusin', handleFocus);
-      document.addEventListener('focusout', handleBlur);
+      document.addEventListener("focusin", handleFocus);
+      document.addEventListener("focusout", handleBlur);
 
       return () => {
         if (window.visualViewport) {
-          window.visualViewport.removeEventListener('resize', handleResize);
-          window.visualViewport.removeEventListener('scroll', handleResize);
+          window.visualViewport.removeEventListener("resize", handleResize);
+          window.visualViewport.removeEventListener("scroll", handleResize);
         } else {
-          window.removeEventListener('resize', handleResize);
+          window.removeEventListener("resize", handleResize);
         }
-        document.removeEventListener('focusin', handleFocus);
-        document.removeEventListener('focusout', handleBlur);
+        document.removeEventListener("focusin", handleFocus);
+        document.removeEventListener("focusout", handleBlur);
       };
     }
   }, [isMobile]);
@@ -1237,26 +1385,26 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
     const sessionId =
       (window as any)._ghl_session_id ||
       (window as any).vst ||
-      'local_test_session_' + Date.now();
+      "local_test_session_" + Date.now();
 
     const locationId = import.meta.env.VITE_LEAD_OPTIMIZER_LOCATION_ID;
     const webhookUrl = import.meta.env.VITE_LEAD_OPTIMIZER_WEBHOOK_URL;
 
     // Phone sanitization
-    let rawPhone = formData.phone.replace(/\D/g, '');
-    const cleanCode = countryCode.replace(/\D/g, '');
+    let rawPhone = formData.phone.replace(/\D/g, "");
+    const cleanCode = countryCode.replace(/\D/g, "");
     if (rawPhone.startsWith(cleanCode)) {
       rawPhone = rawPhone.substring(cleanCode.length);
     }
-    if (rawPhone.startsWith('0')) {
+    if (rawPhone.startsWith("0")) {
       rawPhone = rawPhone.substring(1);
     }
     const finalPhone = `${countryCode}${rawPhone}`;
 
     // Name splitting
-    const nameParts = (formData.name || '').trim().split(' ');
-    const firstName = nameParts[0] || '';
-    const lastName = nameParts.slice(1).join(' ') || '';
+    const nameParts = (formData.name || "").trim().split(" ");
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ") || "";
 
     const payload = {
       firstName,
@@ -1265,28 +1413,28 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
       phone: finalPhone,
       property_type: formData.propertyType,
       project_type: formData.projectType,
-      products: formData.productsNeeded?.join(', ') || '',
+      products: formData.productsNeeded?.join(", ") || "",
       journey_type: journeyType,
       attribution_id: sessionId,
       locationId,
-      source: 'Website Hero Form',
+      source: "Website Hero Form",
     };
 
     try {
       const response = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        console.error('GHL Webhook rejected the payload:', response.statusText);
+        console.error("GHL Webhook rejected the payload:", response.statusText);
         return false;
       }
 
       return true;
     } catch (error) {
-      console.error('LeadOptimizer Integration Error:', error);
+      console.error("LeadOptimizer Integration Error:", error);
       return false;
     }
   };
@@ -1304,22 +1452,25 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
 
       setCurrentStep(totalSteps);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error("Error submitting form:", error);
     }
   };
 
   const isStepValid = () => {
     switch (currentStep) {
       case 0:
-        return formData.projectType !== '';
+        return formData.projectType !== "";
       case 1:
-        return formData.propertyType !== '';
+        return formData.propertyType !== "";
       case 2:
         return formData.productsNeeded.length > 0;
       case 3:
         return formData.name.trim().length > 0;
       case 4:
-        const phoneValidation = validatePhone(formData.phone, selectedCountryCode);
+        const phoneValidation = validatePhone(
+          formData.phone,
+          selectedCountryCode,
+        );
         return phoneValidation.isValid && !phoneError;
       case 5:
         return true; // Email is optional
@@ -1340,29 +1491,35 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
               {/* Visit Showroom Button */}
               <div
                 onClick={() => {
-                  setJourneyType('showroom');
+                  setJourneyType("showroom");
                   setCurrentStep(0);
                 }}
-                onTouchStart={(e) => { e.currentTarget.style.opacity = '0.9'; }}
+                onTouchStart={(e) => {
+                  e.currentTarget.style.opacity = "0.9";
+                }}
                 onTouchEnd={(e) => {
-                  e.currentTarget.style.opacity = '1';
-                  setJourneyType('showroom');
+                  e.currentTarget.style.opacity = "1";
+                  setJourneyType("showroom");
                   setCurrentStep(0);
                 }}
                 style={{
-                  WebkitTapHighlightColor: 'rgba(0, 121, 105, 0.1)',
-                  touchAction: 'manipulation',
-                  userSelect: 'none',
-                  WebkitUserSelect: 'none',
-                  cursor: 'pointer',
+                  WebkitTapHighlightColor: "rgba(0, 121, 105, 0.1)",
+                  touchAction: "manipulation",
+                  userSelect: "none",
+                  WebkitUserSelect: "none",
+                  cursor: "pointer",
                 }}
                 className="w-full bg-[#007969] text-white px-6 py-4 rounded-xl shadow-lg active:shadow-md active:scale-[0.98] transition-all font-['Rajdhani',sans-serif] font-semibold text-base flex items-center justify-between group"
               >
                 <div className="flex items-center gap-3 pointer-events-none">
                   <Glasses className="w-6 h-6" strokeWidth={2} />
                   <div className="text-left">
-                    <div className="text-base font-semibold">Visit Our Showroom</div>
-                    <div className="text-xs text-white/80 font-['Barlow',sans-serif] font-normal">Experience products firsthand</div>
+                    <div className="text-base font-semibold">
+                      Visit Our Showroom
+                    </div>
+                    <div className="text-xs text-white/80 font-['Barlow',sans-serif] font-normal">
+                      Experience products firsthand
+                    </div>
                   </div>
                 </div>
                 <ArrowRight className="w-5 h-5 transition-transform pointer-events-none" />
@@ -1371,36 +1528,44 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
               {/* Divider */}
               <div className="flex items-center gap-3 py-1 pointer-events-none">
                 <div className="flex-1 h-px bg-gray-200" />
-                <span className="text-sm font-['Rajdhani',sans-serif] font-semibold text-gray-400">OR</span>
+                <span className="text-sm font-['Rajdhani',sans-serif] font-semibold text-gray-400">
+                  OR
+                </span>
                 <div className="flex-1 h-px bg-gray-200" />
               </div>
 
               {/* Get a Quote Button */}
               <div
                 onClick={() => {
-                  setJourneyType('quote');
+                  setJourneyType("quote");
                   setCurrentStep(0);
                 }}
-                onTouchStart={(e) => { e.currentTarget.style.opacity = '0.9'; }}
+                onTouchStart={(e) => {
+                  e.currentTarget.style.opacity = "0.9";
+                }}
                 onTouchEnd={(e) => {
-                  e.currentTarget.style.opacity = '1';
-                  setJourneyType('quote');
+                  e.currentTarget.style.opacity = "1";
+                  setJourneyType("quote");
                   setCurrentStep(0);
                 }}
                 style={{
-                  WebkitTapHighlightColor: 'rgba(0, 121, 105, 0.1)',
-                  touchAction: 'manipulation',
-                  userSelect: 'none',
-                  WebkitUserSelect: 'none',
-                  cursor: 'pointer',
+                  WebkitTapHighlightColor: "rgba(0, 121, 105, 0.1)",
+                  touchAction: "manipulation",
+                  userSelect: "none",
+                  WebkitUserSelect: "none",
+                  cursor: "pointer",
                 }}
                 className="w-full bg-white text-[#007969] px-6 py-4 rounded-xl shadow-lg active:shadow-md active:scale-[0.98] transition-all font-['Rajdhani',sans-serif] font-semibold text-base flex items-center justify-between border-2 border-[#007969] group"
               >
                 <div className="flex items-center gap-3 pointer-events-none">
                   <MessageCircle className="w-6 h-6" strokeWidth={2} />
                   <div className="text-left">
-                    <div className="text-base font-semibold">Get a Free Quote</div>
-                    <div className="text-xs text-[#007969]/70 font-['Barlow',sans-serif] font-normal">Receive quote in minutes</div>
+                    <div className="text-base font-semibold">
+                      Get a Free Quote
+                    </div>
+                    <div className="text-xs text-[#007969]/70 font-['Barlow',sans-serif] font-normal">
+                      Receive quote in minutes
+                    </div>
                   </div>
                 </div>
                 <ArrowRight className="w-5 h-5 transition-transform pointer-events-none" />
@@ -1431,14 +1596,18 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                   }}
                   className={`p-5 lg:p-6 rounded-xl border-2 transition-all text-center hover:shadow-lg group flex flex-col items-center justify-center active:scale-95 ${
                     formData.projectType === type.value
-                      ? 'border-[#008873] bg-[#008873]/5'
-                      : 'border-[#e5e7eb] hover:border-[#008873] bg-white'
+                      ? "border-[#008873] bg-[#008873]/5"
+                      : "border-[#e5e7eb] hover:border-[#008873] bg-white"
                   }`}
                 >
-                  <div className={`mb-3 ${formData.projectType === type.value ? 'text-[#008873]' : 'text-[#008873] group-hover:text-[#007969]'}`}>
+                  <div
+                    className={`mb-3 ${formData.projectType === type.value ? "text-[#008873]" : "text-[#008873] group-hover:text-[#007969]"}`}
+                  >
                     {type.icon}
                   </div>
-                  <div className={`font-['Inter',sans-serif] text-base lg:text-lg font-medium ${formData.projectType === type.value ? 'text-[#008873]' : 'text-[#1c1c1e] group-hover:text-[#008873]'}`}>
+                  <div
+                    className={`font-['Inter',sans-serif] text-base lg:text-lg font-medium ${formData.projectType === type.value ? "text-[#008873]" : "text-[#1c1c1e] group-hover:text-[#008873]"}`}
+                  >
                     {type.label}
                   </div>
                 </button>
@@ -1469,14 +1638,18 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                   }}
                   className={`p-4 lg:p-5 rounded-xl border-2 transition-all text-center hover:shadow-lg group flex flex-col items-center justify-center active:scale-95 ${
                     formData.propertyType === type.value
-                      ? 'border-[#008873] bg-[#008873]/5'
-                      : 'border-[#e5e7eb] hover:border-[#008873] bg-white'
+                      ? "border-[#008873] bg-[#008873]/5"
+                      : "border-[#e5e7eb] hover:border-[#008873] bg-white"
                   }`}
                 >
-                  <div className={`mb-2 ${formData.propertyType === type.value ? 'text-[#008873]' : 'text-[#008873] group-hover:text-[#007969]'}`}>
+                  <div
+                    className={`mb-2 ${formData.propertyType === type.value ? "text-[#008873]" : "text-[#008873] group-hover:text-[#007969]"}`}
+                  >
                     {type.icon}
                   </div>
-                  <div className={`font-['Inter',sans-serif] text-sm lg:text-base font-medium ${formData.propertyType === type.value ? 'text-[#008873]' : 'text-[#1c1c1e] group-hover:text-[#008873]'}`}>
+                  <div
+                    className={`font-['Inter',sans-serif] text-sm lg:text-base font-medium ${formData.propertyType === type.value ? "text-[#008873]" : "text-[#1c1c1e] group-hover:text-[#008873]"}`}
+                  >
                     {type.label}
                   </div>
                 </button>
@@ -1501,14 +1674,17 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
               <div className="bg-[#008873]/10 border border-[#008873]/20 rounded-lg px-3 py-2 inline-flex items-center gap-2">
                 <Check className="w-4 h-4 text-[#008873]" />
                 <span className="font-['Inter',sans-serif] text-sm text-[#008873] font-medium">
-                  {formData.productsNeeded.length} product{formData.productsNeeded.length !== 1 ? 's' : ''} selected
+                  {formData.productsNeeded.length} product
+                  {formData.productsNeeded.length !== 1 ? "s" : ""} selected
                 </span>
               </div>
             )}
 
             <div className="grid grid-cols-2 gap-2 lg:gap-4 max-h-[45vh] lg:max-h-none overflow-y-auto">
               {products.map((product) => {
-                const isSelected = formData.productsNeeded.includes(product.value);
+                const isSelected = formData.productsNeeded.includes(
+                  product.value,
+                );
                 return (
                   <button
                     key={product.value}
@@ -1517,25 +1693,34 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                       setFormData({
                         ...formData,
                         productsNeeded: isSelected
-                          ? formData.productsNeeded.filter(p => p !== product.value)
+                          ? formData.productsNeeded.filter(
+                              (p) => p !== product.value,
+                            )
                           : [...formData.productsNeeded, product.value],
                       });
                     }}
                     className={`relative p-2.5 lg:p-5 rounded-lg lg:rounded-xl border-2 transition-all text-center group flex flex-col items-center justify-center active:scale-95 ${
                       isSelected
-                        ? 'border-[#008873] bg-[#008873]/5'
-                        : 'border-[#e5e7eb] hover:border-[#008873]/40 bg-white'
+                        ? "border-[#008873] bg-[#008873]/5"
+                        : "border-[#e5e7eb] hover:border-[#008873]/40 bg-white"
                     }`}
                   >
                     {isSelected && (
                       <div className="absolute top-1 right-1 lg:top-2 lg:right-2 w-5 h-5 lg:w-6 lg:h-6 bg-[#008873] rounded-full flex items-center justify-center">
-                        <Check className="w-3 h-3 lg:w-4 lg:h-4 text-white" strokeWidth={3} />
+                        <Check
+                          className="w-3 h-3 lg:w-4 lg:h-4 text-white"
+                          strokeWidth={3}
+                        />
                       </div>
                     )}
-                    <div className={`mb-1 lg:mb-2 ${isSelected ? 'text-[#008873]' : 'text-[#008873] group-hover:text-[#007969]'}`}>
+                    <div
+                      className={`mb-1 lg:mb-2 ${isSelected ? "text-[#008873]" : "text-[#008873] group-hover:text-[#007969]"}`}
+                    >
                       {product.icon}
                     </div>
-                    <div className={`font-['Inter',sans-serif] text-xs lg:text-base font-medium leading-tight ${isSelected ? 'text-[#008873]' : 'text-[#1c1c1e] group-hover:text-[#008873]'}`}>
+                    <div
+                      className={`font-['Inter',sans-serif] text-xs lg:text-base font-medium leading-tight ${isSelected ? "text-[#008873]" : "text-[#1c1c1e] group-hover:text-[#008873]"}`}
+                    >
                       {product.label}
                     </div>
                   </button>
@@ -1559,8 +1744,12 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
             <input
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              onKeyPress={(e) => e.key === 'Enter' && isStepValid() && handleNext()}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              onKeyPress={(e) =>
+                e.key === "Enter" && isStepValid() && handleNext()
+              }
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               className="w-full px-4 py-4 text-lg text-[#1c1c1e] border-2 border-[#e5e7eb] rounded-xl focus:ring-2 focus:ring-[#008873] focus:border-[#008873] outline-none transition-all font-['Inter',sans-serif] placeholder:text-[rgba(10,10,10,0.3)]"
@@ -1587,7 +1776,7 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                   value={selectedCountryCode}
                   onChange={(e) => {
                     setSelectedCountryCode(e.target.value);
-                    if (phoneError) setPhoneError('');
+                    if (phoneError) setPhoneError("");
                   }}
                   className="px-4 py-4 bg-white border-2 border-[#e5e7eb] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#008873] focus:border-[#008873] transition-all font-['Inter',sans-serif] text-base text-gray-900 cursor-pointer"
                 >
@@ -1603,13 +1792,16 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                   inputMode="numeric"
                   value={formData.phone}
                   onChange={(e) => {
-                    const value = e.target.value.replace(/[^\d\s\-\(\)]/g, '');
+                    const value = e.target.value.replace(/[^\d\s\-\(\)]/g, "");
                     setFormData({ ...formData, phone: value });
-                    if (phoneError) setPhoneError('');
+                    if (phoneError) setPhoneError("");
                   }}
                   onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      const validation = validatePhone(formData.phone, selectedCountryCode);
+                    if (e.key === "Enter") {
+                      const validation = validatePhone(
+                        formData.phone,
+                        selectedCountryCode,
+                      );
                       if (validation.isValid) handleNext();
                     }
                   }}
@@ -1617,12 +1809,17 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                   onBlur={() => {
                     setIsFocused(false);
                     if (formData.phone) {
-                      const validation = validatePhone(formData.phone, selectedCountryCode);
+                      const validation = validatePhone(
+                        formData.phone,
+                        selectedCountryCode,
+                      );
                       setPhoneError(validation.error);
                     }
                   }}
                   className={`flex-1 px-4 py-4 text-lg text-[#1c1c1e] border-2 rounded-xl focus:ring-2 focus:ring-[#008873] outline-none transition-all font-['Inter',sans-serif] placeholder:text-[rgba(10,10,10,0.3)] ${
-                    phoneError ? 'border-red-500 focus:border-red-500' : 'border-[#e5e7eb] focus:border-[#008873]'
+                    phoneError
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-[#e5e7eb] focus:border-[#008873]"
                   }`}
                   placeholder="Enter phone number"
                   autoFocus
@@ -1638,7 +1835,12 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
 
               {!phoneError && (
                 <div className="text-xs text-[#6b7280] font-['Barlow',sans-serif]">
-                  Enter {countryCodes.find(c => c.code === selectedCountryCode)?.minLength} digits without country code
+                  Enter{" "}
+                  {
+                    countryCodes.find((c) => c.code === selectedCountryCode)
+                      ?.minLength
+                  }{" "}
+                  digits without country code
                 </div>
               )}
             </div>
@@ -1662,9 +1864,9 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                 value={formData.email}
                 onChange={(e) => {
                   setFormData({ ...formData, email: e.target.value });
-                  setEmailError('');
+                  setEmailError("");
                 }}
-                onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
+                onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => {
                   setIsFocused(false);
@@ -1672,7 +1874,9 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                   setEmailError(validation.error);
                 }}
                 className={`w-full px-4 py-4 text-lg text-[#1c1c1e] border-2 rounded-xl focus:ring-2 focus:ring-[#008873] outline-none transition-all font-['Inter',sans-serif] placeholder:text-[rgba(10,10,10,0.3)] ${
-                  emailError ? 'border-red-500 focus:border-red-500' : 'border-[#e5e7eb] focus:border-[#008873]'
+                  emailError
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-[#e5e7eb] focus:border-[#008873]"
                 }`}
                 placeholder="your@email.com"
                 autoFocus
@@ -1692,7 +1896,10 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
         return (
           <div key="step-6" className="text-center py-12 space-y-6">
             <div className="w-20 h-20 lg:w-24 lg:h-24 bg-[#008873] rounded-full flex items-center justify-center mx-auto">
-              <Check className="w-10 h-10 lg:w-12 lg:h-12 text-white" strokeWidth={3} />
+              <Check
+                className="w-10 h-10 lg:w-12 lg:h-12 text-white"
+                strokeWidth={3}
+              />
             </div>
 
             <div>
@@ -1703,7 +1910,8 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                 We truly appreciate you taking the time to reach out to us.
               </p>
               <p className="font-['Barlow',sans-serif] text-base lg:text-lg text-[#3a3a3c] mb-6">
-                Your quote request has been received and our team will contact you shortly.
+                Your quote request has been received and our team will contact
+                you shortly.
               </p>
             </div>
 
@@ -1755,13 +1963,13 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                 const isMobile = window.innerWidth < 1024;
 
                 setFormData({
-                  name: '',
-                  phone: '',
-                  email: '',
-                  propertyType: '',
+                  name: "",
+                  phone: "",
+                  email: "",
+                  propertyType: "",
                   productsNeeded: [] as string[],
-                  projectType: '',
-                  message: '',
+                  projectType: "",
+                  message: "",
                   privacyConsent: false,
                   marketingConsent: false,
                 });
@@ -1772,18 +1980,23 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                   setIsFormOpen(false);
                   setShowMenu(false);
                   setTimeout(() => {
-                    const heroSection = document.getElementById('hero');
+                    const heroSection = document.getElementById("hero");
                     if (heroSection) {
-                      heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      heroSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
                     } else {
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                      window.scrollTo({ top: 0, behavior: "smooth" });
                     }
                   }, 300);
                 }
               }}
               className="text-[#008873] font-['Barlow',sans-serif] text-sm lg:text-base font-medium hover:underline"
             >
-              {window.innerWidth < 1024 ? 'Return to Home' : 'Submit another request'}
+              {window.innerWidth < 1024
+                ? "Return to Home"
+                : "Submit another request"}
             </button>
           </div>
         );
@@ -1804,9 +2017,9 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
               setIsFormOpen(true);
             }}
             className={`group relative inline-flex items-center gap-3 px-8 py-4 lg:px-12 lg:py-5 rounded-2xl font-['Rajdhani',sans-serif] text-lg lg:text-2xl font-semibold shadow-2xl transition-all duration-300 overflow-hidden active:scale-95 ${
-              ctaVariant === 'white'
-                ? 'bg-white text-[#007969] hover:bg-[#007969] hover:text-white'
-                : 'bg-[#007969] text-white hover:bg-white hover:text-[#007969]'
+              ctaVariant === "white"
+                ? "bg-white text-[#007969] hover:bg-[#007969] hover:text-white"
+                : "bg-[#007969] text-white hover:bg-white hover:text-[#007969]"
             }`}
           >
             <span className="relative z-10">Start Your Swiftrooms Journey</span>
@@ -1849,7 +2062,9 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
               <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-[#008873] rounded-full transition-all duration-400"
-                  style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
+                  style={{
+                    width: `${((currentStep + 1) / totalSteps) * 100}%`,
+                  }}
                 />
               </div>
             </div>
@@ -1876,11 +2091,11 @@ export function LeadForm({ autoOpen = false, ctaVariant = 'green' }: { autoOpen?
                 disabled={!isStepValid()}
                 className={`flex items-center gap-2 px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl font-['Barlow',sans-serif] text-sm lg:text-base font-medium transition-all ml-auto ${
                   isStepValid()
-                    ? 'bg-[#008873] text-white hover:bg-white hover:text-[#008873] hover:ring-2 hover:ring-[#008873] hover:shadow-lg active:scale-95'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    ? "bg-[#008873] text-white hover:bg-white hover:text-[#008873] hover:ring-2 hover:ring-[#008873] hover:shadow-lg active:scale-95"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
               >
-                {currentStep === 5 ? 'Submit' : 'Next'}
+                {currentStep === 5 ? "Submit" : "Next"}
                 <ChevronRight className="w-4 h-4 lg:w-5 lg:h-5" />
               </button>
             </div>
